@@ -6,13 +6,13 @@ import { Badge } from "@/components/ui/badge";
 
 export function Compliance() {
     return (
-        <section className="py-12 lg:py-24 px-4 md:px-6">
-            <div className="container mx-auto max-w-5xl">
+        <section className="py-12 px-4 md:px-6">
+            <div className="container mx-auto max-w-7xl">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="bg-rose-500/5 border border-rose-500/20 rounded-[2.5rem] p-6 lg:p-12"
+                    className="bg-rose-500/5 border border-rose-500/20 rounded-[2rem] p-8 md:p-12"
                 >
                     <div className="flex flex-col md:flex-row items-center gap-10">
                         <div className="w-16 h-16 lg:w-24 lg:h-24 rounded-2xl lg:rounded-[2rem] bg-rose-500 text-white flex items-center justify-center shrink-0 shadow-[0_15px_30px_-5px_rgba(244,63,94,0.4)] rotate-3">

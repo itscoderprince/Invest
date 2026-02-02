@@ -50,7 +50,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { DashboardBreadcrumbs } from "@/components/DashboardBreadcrumbs";
+import { ROUTES } from "@/lib/routes";
+import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 
 const investments = [
     { id: "INV-001", index: "Moscow Index", amount: "$5,000.00", date: "2024-01-15", status: "Approved" },

@@ -26,7 +26,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { DashboardBreadcrumbs } from "@/components/DashboardBreadcrumbs";
+import { ROUTES } from "@/lib/routes";
+import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 
 const history = [
     { id: "WID-102", amount: "$1,200.00", date: "2024-01-18", status: "Approved" },

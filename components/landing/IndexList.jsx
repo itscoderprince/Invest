@@ -15,6 +15,7 @@ import {
 import { BarChart4, ChevronRight, PieChart, ShieldCheck, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { ROUTES } from "@/lib/routes";
 
 // High-integrity financial data
 const indexes = [
@@ -187,7 +188,7 @@ export default function IndexList() {
 
                                     <div className="mt-4 lg:mt-6">
                                         <Button className="w-full rounded-xl h-11 lg:h-12 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold transition-all duration-300 group-hover:bg-blue-600 group-hover:text-white shadow-lg group-hover:shadow-blue-500/25" asChild>
-                                            <Link href="/auth/register" className="flex items-center justify-center gap-2">
+                                            <Link href={ROUTES.AUTH.REGISTER} className="flex items-center justify-center gap-2">
                                                 Invest Now
                                                 <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                                             </Link>

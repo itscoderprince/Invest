@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Shield, Menu, ChevronRight, Lock, LogOut, User, Activity, Newspaper, LifeBuoy, Video, Wallet } from "lucide-react";
+import { Shield, Menu, ChevronRight, Lock, LogOut, User, Activity, Newspaper, LifeBuoy, Video, Wallet, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -35,12 +35,8 @@ import {
 } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 
-const navLinks = [
-  { name: "Protocol", href: "#features" },
-  { name: "Live Indexes", href: "#indexes" },
-  { name: "Verification", href: "#steps" },
-  { name: "Governance", href: "/trust" },
-];
+import { ROUTES } from "@/lib/routes";
+import { NAV_LINKS, SITE_CONFIG } from "@/lib/config";
 
 export function Navbar() {
   // TODO: Replace with actual auth context/state
@@ -50,13 +46,13 @@ export function Navbar() {
     <div className="fixed top-0 left-0 right-0 z-50 flex justify-center bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200/50 dark:border-white/10">
       <nav className="w-full max-w-7xl px-4 md:px-6 py-3 flex items-center justify-between transition-all duration-300 ease-in-out">
         {/* Logo Section */}
-        <Link href="/" className="flex items-center gap-2.5 group">
+        <Link href={ROUTES.HOME} className="flex items-center gap-2.5 group">
           <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-primary to-blue-600 text-white shadow-lg transition-transform group-hover:scale-105">
             <Shield className="h-5 w-5 fill-current" />
             <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-white/20" />
           </div>
           <span className="font-bold tracking-tight text-lg text-slate-900 dark:text-white">
-            Invest<span className="text-slate-500 dark:text-slate-400">Track</span>
+            {SITE_CONFIG.name.replace("Track", "")}<span className="text-slate-500 dark:text-slate-400">Track</span>
           </span>
         </Link>
 
@@ -64,7 +60,7 @@ export function Navbar() {
         <div className="hidden md:block absolute left-1/2 -translate-x-1/2">
           <NavigationMenu>
             <NavigationMenuList className="space-x-1">
-              {navLinks.map((link) => (
+              {NAV_LINKS.map((link) => (
                 <NavigationMenuItem key={link.name}>
                   <NavigationMenuLink asChild>
                     <Link
@@ -108,61 +104,60 @@ export function Navbar() {
                       </Avatar>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-72" align="end" forceMount>
-                    <DropdownMenuLabel className="font-normal">
+                  <DropdownMenuContent className="w-64 rounded-2xl p-2 shadow-2xl border-slate-200 dark:border-white/10" align="end" sideOffset={8}>
+                    <DropdownMenuLabel className="font-normal p-4">
                       <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">Prince Sharma</p>
+                        <p className="text-sm font-bold leading-none">Prince Sharma</p>
                         <p className="text-xs leading-none text-muted-foreground">
                           itscoderprince@gmail.com
                         </p>
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <div className="px-2 py-1.5">
-                      <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Account Balance</span>
-                      <div className="flex items-center justify-between mt-1">
-                        <span className="text-lg font-bold text-slate-900 dark:text-white">0.00 USD</span>
-                      </div>
-                      <div className="flex items-center gap-1 mt-2 text-primary text-xs font-medium cursor-pointer hover:underline">
-                        <span>Withdraw Balance</span> <Wallet className="h-3 w-3" />
+                    <div className="px-4 py-3">
+                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block mb-1">Total Balance</span>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xl font-black text-slate-900 dark:text-white">0.00 USD</span>
+                        <Link href={ROUTES.DASHBOARD.WITHDRAWALS}>
+                          <Button size="xs" variant="outline" className="h-7 text-[10px] font-bold uppercase rounded-lg">
+                            Withdraw
+                          </Button>
+                        </Link>
                       </div>
                     </div>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                      <DropdownMenuItem asChild>
-                        <Link href="/dashboard/edit-profile" className="cursor-pointer">
-                          <User className="mr-2 h-4 w-4" />
-                          <span>My Profile</span>
+                      <DropdownMenuItem asChild className="rounded-xl cursor-pointer">
+                        <Link href={ROUTES.DASHBOARD.OVERVIEW} className="flex items-center">
+                          <LayoutDashboard className="mr-3 h-4 w-4 text-primary" />
+                          <span className="font-semibold">Dashboard</span>
                         </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link href="/dashboard/activity" className="cursor-pointer">
-                          <Activity className="mr-2 h-4 w-4" />
-                          <span>Activity</span>
+                      <DropdownMenuItem asChild className="rounded-xl cursor-pointer">
+                        <Link href={ROUTES.DASHBOARD.EDIT_PROFILE} className="flex items-center">
+                          <User className="mr-3 h-4 w-4 text-blue-500" />
+                          <span className="font-semibold">My Profile</span>
                         </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link href="/news" className="cursor-pointer">
-                          <Newspaper className="mr-2 h-4 w-4" />
-                          <span>News</span>
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link href="/dashboard/support" className="cursor-pointer">
-                          <LifeBuoy className="mr-2 h-4 w-4" />
-                          <span>Support</span>
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link href="/tutorials" className="cursor-pointer">
-                          <Video className="mr-2 h-4 w-4" />
-                          <span>Tutorials</span>
+                      <DropdownMenuItem asChild className="rounded-xl cursor-pointer">
+                        <Link href={ROUTES.DASHBOARD.INVESTMENTS} className="flex items-center">
+                          <Wallet className="mr-3 h-4 w-4 text-emerald-500" />
+                          <span className="font-semibold">Investments</span>
                         </Link>
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="text-red-500 focus:text-red-500 focus:bg-red-50 dark:focus:bg-red-950/20 cursor-pointer">
-                      <LogOut className="mr-2 h-4 w-4" />
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem asChild className="rounded-xl cursor-pointer">
+                        <Link href={ROUTES.DASHBOARD.SUPPORT} className="flex items-center">
+                          <LifeBuoy className="mr-3 h-4 w-4 text-amber-500" />
+                          <span className="font-semibold">Support Center</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="rounded-xl text-rose-500 focus:text-rose-500 focus:bg-rose-50 dark:focus:bg-rose-950/20 cursor-pointer font-bold">
+                      <LogOut className="mr-3 h-4 w-4" />
                       <span>Log out</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -204,7 +199,7 @@ export function Navbar() {
 
                 <div className="flex flex-col h-full py-4 lg:py-6">
                   <div className="px-3 md:px-4 space-y-1">
-                    {navLinks.map((link) => (
+                    {NAV_LINKS.map((link) => (
                       <SheetClose asChild key={link.name}>
                         <Link
                           href={link.href}

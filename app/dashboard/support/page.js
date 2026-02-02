@@ -13,7 +13,8 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { DashboardBreadcrumbs } from "@/components/DashboardBreadcrumbs";
+import { ROUTES } from "@/lib/routes";
+import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 
 export default function SupportPage() {
     return (

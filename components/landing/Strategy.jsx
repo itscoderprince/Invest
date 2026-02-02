@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { ROUTES } from "@/lib/routes";
 
 const strategies = [
     {
@@ -134,7 +135,7 @@ export function Strategy() {
                                 )}
                                 asChild
                             >
-                                <Link href="/auth/register" className="flex items-center justify-center gap-2">
+                                <Link href={ROUTES.AUTH.REGISTER} className="flex items-center justify-center gap-2">
                                     {strat.cta}
                                     <ChevronRight className="w-4 h-4" />
                                 </Link>

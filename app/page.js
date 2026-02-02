@@ -9,6 +9,7 @@ import { Journey } from "@/components/landing/Journey";
 import { Compliance } from "@/components/landing/Compliance";
 import { Trust } from "@/components/landing/Trust";
 import IndexList from "@/components/landing/IndexList";
+import { Contact } from "@/components/landing/Contact";
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
         <Journey />
         <Trust />
         <Compliance />
+        <Contact />
       </main>
 
       <Footer />

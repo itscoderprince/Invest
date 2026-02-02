@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { ROUTES } from "@/lib/routes";
 
 export function Hero() {
     return (
@@ -69,7 +70,7 @@ export function Hero() {
                             className="flex flex-wrap justify-center lg:justify-start gap-4 mb-6"
                         >
                             <Button size="lg" className="rounded-full bg-primary text-primary-foreground px-8 h-12 shadow-lg shadow-primary/20 hover:scale-105 transition-all" asChild>
-                                <Link href="/auth/register">Initialize Access</Link>
+                                <Link href={ROUTES.AUTH.REGISTER}>Initialize Access</Link>
                             </Button>
                             <Button variant="ghost" className="rounded-full px-8 h-12 font-bold group border border-slate-200 dark:border-white/10" asChild>
                                 <Link href="#indexes" className="flex items-center gap-2">

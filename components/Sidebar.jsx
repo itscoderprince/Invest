@@ -34,15 +34,8 @@ import {
     useSidebar,
 } from "@/components/ui/sidebar";
 
-const menuItems = [
-    { name: "Overview", icon: LayoutDashboard, href: "/dashboard/overview" },
-    { name: "Investments", icon: Wallet, href: "/dashboard/investments" },
-    { name: "KYC Verification", icon: UserCheck, href: "/dashboard/kyc" },
-    { name: "Withdrawals", icon: History, href: "/dashboard/withdrawals" },
-    { name: "Referrals", icon: Users, href: "/dashboard/referrals" },
-    { name: "Activity", icon: Activity, href: "/dashboard/activity" },
-    { name: "Support", icon: LifeBuoy, href: "/dashboard/support" },
-];
+import { ROUTES } from "@/lib/routes";
+import { DASHBOARD_MENU, SITE_CONFIG } from "@/lib/config";
 
 export function AppSidebar() {
     const pathname = usePathname();
@@ -69,7 +62,7 @@ export function AppSidebar() {
                     </SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {menuItems.map((item) => {
+                            {DASHBOARD_MENU.map((item) => {
                                 const isActive = pathname === item.href;
                                 return (
                                     <SidebarMenuItem key={item.href}>
@@ -119,7 +112,7 @@ export function AppSidebar() {
                         </div>
                     </div>
                     <Button variant="ghost" size="icon" className="text-rose-500 hover:bg-rose-500/10 rounded-xl group-data-[collapsible=icon]:hidden" asChild>
-                        <Link href="/auth/login">
+                        <Link href={ROUTES.AUTH.LOGIN}>
                             <LogOut className="h-5 w-5" />
                         </Link>
                     </Button>

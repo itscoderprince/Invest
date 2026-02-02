@@ -29,8 +29,9 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar";
-import { cn } from "@/lib/utils";
-import { DashboardBreadcrumbs } from "@/components/DashboardBreadcrumbs";
+import { ROUTES } from "@/lib/routes";
+import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
+import { StatCard } from "@/components/dashboard/StatCard";
 
 export default function OverviewPage() {
     return (
@@ -74,7 +75,7 @@ export default function OverviewPage() {
                                 </div>
                             </div>
                             <div className="grid grid-cols-2 gap-3">
-                                <Button className="w-full bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 rounded-xl" asChild>
+                                <Button className="w-full shadow-lg shadow-primary/20 rounded-xl" asChild>
                                     <Link href="/deposit">Deposit</Link>
                                 </Button>
                                 <Button variant="outline" className="w-full border-emerald-500 text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700 dark:text-emerald-400 dark:hover:bg-emerald-950/30 rounded-xl" asChild>
@@ -96,34 +97,10 @@ export default function OverviewPage() {
                         </CardHeader>
                         <CardContent className="p-4 md:p-6">
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mt-2">
-                                {/* Wallet 1 */}
-                                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 transition-all hover:shadow-md hover:border-primary/20 group">
-                                    <span className="text-[10px] font-bold uppercase text-muted-foreground tracking-widest block mb-1">USD</span>
-                                    <div className="flex items-center gap-1 text-xl font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors">
-                                        <DollarSign className="w-5 h-5 text-slate-400 group-hover:text-primary" /> 0.00
-                                    </div>
-                                </div>
-                                {/* Wallet 2 */}
-                                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 transition-all hover:shadow-md hover:border-blue-500/20 group">
-                                    <span className="text-[10px] font-bold uppercase text-muted-foreground tracking-widest block mb-1">EURO</span>
-                                    <div className="flex items-center gap-1 text-xl font-black text-slate-900 dark:text-white group-hover:text-blue-500 transition-colors">
-                                        <Euro className="w-5 h-5 text-slate-400 group-hover:text-blue-500" /> 0.00
-                                    </div>
-                                </div>
-                                {/* Wallet 3 */}
-                                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 transition-all hover:shadow-md hover:border-amber-500/20 group">
-                                    <span className="text-[10px] font-bold uppercase text-muted-foreground tracking-widest block mb-1">RUBLE</span>
-                                    <div className="flex items-center gap-1 text-xl font-black text-slate-900 dark:text-white group-hover:text-amber-500 transition-colors">
-                                        <span className="text-xl font-bold w-5 h-5 flex items-center justify-center text-slate-400 group-hover:text-amber-500">₽</span> 0.00
-                                    </div>
-                                </div>
-                                {/* Wallet 4 */}
-                                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 transition-all hover:shadow-md hover:border-purple-500/20 group">
-                                    <span className="text-[10px] font-bold uppercase text-muted-foreground tracking-widest block mb-1">REWARD</span>
-                                    <div className="flex items-center gap-1 text-xl font-black text-slate-900 dark:text-white group-hover:text-purple-500 transition-colors">
-                                        <DollarSign className="w-5 h-5 text-slate-400 group-hover:text-purple-500" /> 0.00
-                                    </div>
-                                </div>
+                                <StatCard label="USD" value="0.00" icon={DollarSign} accentColor="primary" />
+                                <StatCard label="EURO" value="0.00" icon={Euro} accentColor="blue" />
+                                <StatCard label="RUBLE" value="0.00" icon={() => <span className="text-xl font-bold w-5 h-5 flex items-center justify-center">₽</span>} accentColor="amber" />
+                                <StatCard label="REWARD" value="0.00" icon={DollarSign} accentColor="purple" />
                             </div>
                         </CardContent>
                     </Card>

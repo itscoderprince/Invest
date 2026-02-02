@@ -23,7 +23,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { DashboardBreadcrumbs } from "@/components/DashboardBreadcrumbs";
+import { ROUTES } from "@/lib/routes";
+import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
 
 export default function KYCPage() {
     const [status, setStatus] = useState("pending");
