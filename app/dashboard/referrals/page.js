@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { DashboardBreadcrumbs } from "@/components/DashboardBreadcrumbs";
 
 export default function ReferralsPage() {
     const referralCode = "INVEST-772-XYZ";
@@ -38,19 +39,20 @@ export default function ReferralsPage() {
     };
 
     return (
-        <div className="space-y-8">
-            <div>
+        <div className="space-y-4 md:space-y-8">
+            <DashboardBreadcrumbs pageName="Referrals" />
+            <div className="hidden md:block">
                 <h1 className="text-3xl font-bold tracking-tight">Referrals</h1>
                 <p className="text-muted-foreground text-sm">Invite your network and track your collective account growth.</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8">
                 {/* Referral Card */}
                 <Card className="rounded-[2.5rem] bg-primary text-primary-foreground border-none shadow-xl overflow-hidden group relative">
                     <div className="absolute top-0 right-0 p-12 opacity-10 group-hover:scale-125 transition-transform duration-700">
                         <Gift className="w-56 h-56" />
                     </div>
-                    <CardContent className="p-10 relative z-10 space-y-8">
+                    <CardContent className="p-6 md:p-10 relative z-10 space-y-6 md:space-y-8">
                         <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center backdrop-blur-md">
                             <UserPlus className="w-8 h-8" />
                         </div>
@@ -64,14 +66,14 @@ export default function ReferralsPage() {
                         <div className="space-y-3">
                             <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-foreground/50 ml-1">Referral Code</label>
                             <div className="flex items-center gap-3">
-                                <div className="flex-1 bg-white/10 backdrop-blur-md h-16 rounded-2xl flex items-center px-6 font-mono text-2xl font-bold tracking-[0.1em] border border-white/10 shadow-inner">
+                                <div className="flex-1 bg-white/10 backdrop-blur-md h-12 md:h-16 rounded-xl md:rounded-2xl flex items-center px-4 md:px-6 font-mono text-lg md:text-2xl font-bold tracking-[0.1em] border border-white/10 shadow-inner">
                                     {referralCode}
                                 </div>
                                 <Button
                                     onClick={copyCode}
-                                    className="w-16 h-16 rounded-2xl bg-white text-primary flex items-center justify-center shadow-2xl hover:bg-slate-50 transition-all hover:scale-[1.05] active:scale-[0.95]"
+                                    className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-white text-primary flex items-center justify-center shadow-2xl hover:bg-slate-50 transition-all hover:scale-[1.05] active:scale-[0.95]"
                                 >
-                                    <Copy className="w-7 h-7" />
+                                    <Copy className="w-5 h-5 md:w-7 md:h-7" />
                                 </Button>
                             </div>
                         </div>
@@ -114,34 +116,36 @@ export default function ReferralsPage() {
                     </CardTitle>
                     <CardDescription>Real-time status of your referred investors.</CardDescription>
                 </CardHeader>
-                <Table>
-                    <TableHeader className="bg-muted/30">
-                        <TableRow className="border-border">
-                            <TableHead className="px-6 font-bold text-[10px] uppercase text-muted-foreground">User Investor</TableHead>
-                            <TableHead className="px-6 font-bold text-[10px] uppercase text-muted-foreground">Onboarding Date</TableHead>
-                            <TableHead className="px-6 font-bold text-[10px] uppercase text-muted-foreground">Compliance</TableHead>
-                            <TableHead className="px-6 font-bold text-[10px] uppercase text-muted-foreground text-right">Yield Earned</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        <TableRow className="border-border hover:bg-muted/10 transition-colors">
-                            <TableCell className="px-6 font-bold text-sm">Alex Rivera</TableCell>
-                            <TableCell className="px-6 text-xs text-muted-foreground">Jan 12, 2024</TableCell>
-                            <TableCell className="px-6">
-                                <Badge className="bg-emerald-50 text-emerald-700 border-none font-bold text-[9px] uppercase tracking-widest">Active Investor</Badge>
-                            </TableCell>
-                            <TableCell className="px-6 text-right font-bold text-primary">$120.00</TableCell>
-                        </TableRow>
-                        <TableRow className="border-border hover:bg-muted/10 transition-colors">
-                            <TableCell className="px-6 font-bold text-sm">Sarah Chen</TableCell>
-                            <TableCell className="px-6 text-xs text-muted-foreground">Jan 10, 2024</TableCell>
-                            <TableCell className="px-6">
-                                <Badge variant="outline" className="bg-amber-50 text-amber-700 border-none font-bold text-[9px] uppercase tracking-widest">Pending KYC</Badge>
-                            </TableCell>
-                            <TableCell className="px-6 text-right font-bold text-muted-foreground/40">$0.00</TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table>
+                <div className="overflow-x-auto">
+                    <Table>
+                        <TableHeader className="bg-muted/30">
+                            <TableRow className="border-border">
+                                <TableHead className="px-6 font-bold text-[10px] uppercase text-muted-foreground">User Investor</TableHead>
+                                <TableHead className="px-6 font-bold text-[10px] uppercase text-muted-foreground">Onboarding Date</TableHead>
+                                <TableHead className="px-6 font-bold text-[10px] uppercase text-muted-foreground">Compliance</TableHead>
+                                <TableHead className="px-6 font-bold text-[10px] uppercase text-muted-foreground text-right">Yield Earned</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            <TableRow className="border-border hover:bg-muted/10 transition-colors">
+                                <TableCell className="px-6 font-bold text-sm">Alex Rivera</TableCell>
+                                <TableCell className="px-6 text-xs text-muted-foreground">Jan 12, 2024</TableCell>
+                                <TableCell className="px-6">
+                                    <Badge className="bg-emerald-50 text-emerald-700 border-none font-bold text-[9px] uppercase tracking-widest">Active Investor</Badge>
+                                </TableCell>
+                                <TableCell className="px-6 text-right font-bold text-primary">$120.00</TableCell>
+                            </TableRow>
+                            <TableRow className="border-border hover:bg-muted/10 transition-colors">
+                                <TableCell className="px-6 font-bold text-sm">Sarah Chen</TableCell>
+                                <TableCell className="px-6 text-xs text-muted-foreground">Jan 10, 2024</TableCell>
+                                <TableCell className="px-6">
+                                    <Badge variant="outline" className="bg-amber-50 text-amber-700 border-none font-bold text-[9px] uppercase tracking-widest">Pending KYC</Badge>
+                                </TableCell>
+                                <TableCell className="px-6 text-right font-bold text-muted-foreground/40">$0.00</TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </div>
             </Card>
         </div>
     );

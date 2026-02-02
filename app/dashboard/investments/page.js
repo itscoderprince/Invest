@@ -50,6 +50,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { DashboardBreadcrumbs } from "@/components/DashboardBreadcrumbs";
 
 const investments = [
     { id: "INV-001", index: "Moscow Index", amount: "$5,000.00", date: "2024-01-15", status: "Approved" },
@@ -72,9 +73,10 @@ export default function InvestmentsPage() {
     };
 
     return (
-        <div className="space-y-6 lg:space-y-8">
+        <div className="space-y-4 md:space-y-6 lg:space-y-8">
+            <DashboardBreadcrumbs pageName="Investments" />
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
+                <div className="hidden md:block">
                     <h1 className="text-3xl font-bold tracking-tight">Investments</h1>
                     <p className="text-muted-foreground text-sm">Manage and track your index investment requests.</p>
                 </div>
@@ -154,9 +156,9 @@ export default function InvestmentsPage() {
             </div>
 
             {/* Stats Summary */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
                 <Card className="border-none shadow-sm bg-white overflow-hidden group">
-                    <CardContent className="p-5 lg:p-6">
+                    <CardContent className="p-4 md:p-6">
                         <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Active Capital</p>
                         <div className="flex items-end justify-between">
                             <p className="text-3xl font-bold tracking-tight text-primary">$10,500.00</p>
@@ -167,7 +169,7 @@ export default function InvestmentsPage() {
                     </CardContent>
                 </Card>
                 <Card className="border-none shadow-sm bg-white overflow-hidden group">
-                    <CardContent className="p-5 lg:p-6">
+                    <CardContent className="p-4 md:p-6">
                         <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Pending Requests</p>
                         <div className="flex items-end justify-between">
                             <p className="text-3xl font-bold tracking-tight text-amber-500">$2,500.00</p>
@@ -178,7 +180,7 @@ export default function InvestmentsPage() {
                     </CardContent>
                 </Card>
                 <Card className="border-none shadow-sm bg-white overflow-hidden group">
-                    <CardContent className="p-5 lg:p-6">
+                    <CardContent className="p-4 md:p-6">
                         <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Total Earned</p>
                         <div className="flex items-end justify-between">
                             <p className="text-3xl font-bold tracking-tight text-emerald-500">+$1,240.50</p>
@@ -201,46 +203,48 @@ export default function InvestmentsPage() {
                         />
                     </div>
                 </div>
-                <Table>
-                    <TableHeader className="bg-muted/30">
-                        <TableRow className="border-border">
-                            <TableHead className="px-4 lg:px-6 font-bold text-[10px] uppercase tracking-widest text-muted-foreground">ID</TableHead>
-                            <TableHead className="px-4 lg:px-6 font-bold text-[10px] uppercase tracking-widest text-muted-foreground">Index</TableHead>
-                            <TableHead className="px-4 lg:px-6 font-bold text-[10px] uppercase tracking-widest text-muted-foreground">Amount</TableHead>
-                            <TableHead className="px-4 lg:px-6 font-bold text-[10px] uppercase tracking-widest text-muted-foreground">Date</TableHead>
-                            <TableHead className="px-4 lg:px-6 font-bold text-[10px] uppercase tracking-widest text-muted-foreground">Status</TableHead>
-                            <TableHead className="px-4 lg:px-6 font-bold text-[10px] uppercase tracking-widest text-muted-foreground text-right">Action</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {investments.map((inv) => (
-                            <TableRow key={inv.id} className="hover:bg-muted/30 transition-colors border-border">
-                                <TableCell className="px-4 lg:px-6 font-bold text-sm tracking-tight">{inv.id}</TableCell>
-                                <TableCell className="px-4 lg:px-6 text-sm">{inv.index}</TableCell>
-                                <TableCell className="px-4 lg:px-6 font-bold text-sm">{inv.amount}</TableCell>
-                                <TableCell className="px-4 lg:px-6 text-xs text-muted-foreground">{inv.date}</TableCell>
-                                <TableCell className="px-4 lg:px-6">
-                                    <Badge
-                                        variant={inv.status === "Approved" ? "secondary" : "outline"}
-                                        className={cn(
-                                            "font-bold text-[10px] px-2.5 py-0.5 rounded-full uppercase",
-                                            inv.status === "Approved" && "bg-emerald-50 text-emerald-700 border-none",
-                                            inv.status === "Pending" && "bg-amber-50 text-amber-700 border-none",
-                                            inv.status === "Rejected" && "bg-rose-50 text-rose-700 border-none"
-                                        )}
-                                    >
-                                        {inv.status}
-                                    </Badge>
-                                </TableCell>
-                                <TableCell className="px-4 lg:px-6 text-right">
-                                    <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-primary/5 hover:text-primary rounded-lg transition-colors">
-                                        <ExternalLink className="w-4 h-4" />
-                                    </Button>
-                                </TableCell>
+                <div className="overflow-x-auto">
+                    <Table>
+                        <TableHeader className="bg-muted/30">
+                            <TableRow className="border-border">
+                                <TableHead className="px-4 lg:px-6 font-bold text-[10px] uppercase tracking-widest text-muted-foreground">ID</TableHead>
+                                <TableHead className="px-4 lg:px-6 font-bold text-[10px] uppercase tracking-widest text-muted-foreground">Index</TableHead>
+                                <TableHead className="px-4 lg:px-6 font-bold text-[10px] uppercase tracking-widest text-muted-foreground">Amount</TableHead>
+                                <TableHead className="px-4 lg:px-6 font-bold text-[10px] uppercase tracking-widest text-muted-foreground">Date</TableHead>
+                                <TableHead className="px-4 lg:px-6 font-bold text-[10px] uppercase tracking-widest text-muted-foreground">Status</TableHead>
+                                <TableHead className="px-4 lg:px-6 font-bold text-[10px] uppercase tracking-widest text-muted-foreground text-right">Action</TableHead>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
+                        </TableHeader>
+                        <TableBody>
+                            {investments.map((inv) => (
+                                <TableRow key={inv.id} className="hover:bg-muted/30 transition-colors border-border">
+                                    <TableCell className="px-4 lg:px-6 font-bold text-sm tracking-tight">{inv.id}</TableCell>
+                                    <TableCell className="px-4 lg:px-6 text-sm">{inv.index}</TableCell>
+                                    <TableCell className="px-4 lg:px-6 font-bold text-sm">{inv.amount}</TableCell>
+                                    <TableCell className="px-4 lg:px-6 text-xs text-muted-foreground">{inv.date}</TableCell>
+                                    <TableCell className="px-4 lg:px-6">
+                                        <Badge
+                                            variant={inv.status === "Approved" ? "secondary" : "outline"}
+                                            className={cn(
+                                                "font-bold text-[10px] px-2.5 py-0.5 rounded-full uppercase",
+                                                inv.status === "Approved" && "bg-emerald-50 text-emerald-700 border-none",
+                                                inv.status === "Pending" && "bg-amber-50 text-amber-700 border-none",
+                                                inv.status === "Rejected" && "bg-rose-50 text-rose-700 border-none"
+                                            )}
+                                        >
+                                            {inv.status}
+                                        </Badge>
+                                    </TableCell>
+                                    <TableCell className="px-4 lg:px-6 text-right">
+                                        <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-primary/5 hover:text-primary rounded-lg transition-colors">
+                                            <ExternalLink className="w-4 h-4" />
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </div>
             </Card>
         </div>
     );

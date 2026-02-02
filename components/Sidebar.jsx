@@ -12,6 +12,8 @@ import {
     LogOut,
     Shield,
     ChevronRight,
+    Activity,
+    LifeBuoy,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -38,6 +40,8 @@ const menuItems = [
     { name: "KYC Verification", icon: UserCheck, href: "/dashboard/kyc" },
     { name: "Withdrawals", icon: History, href: "/dashboard/withdrawals" },
     { name: "Referrals", icon: Users, href: "/dashboard/referrals" },
+    { name: "Activity", icon: Activity, href: "/dashboard/activity" },
+    { name: "Support", icon: LifeBuoy, href: "/dashboard/support" },
 ];
 
 export function AppSidebar() {

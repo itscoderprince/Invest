@@ -162,34 +162,6 @@ export function Journey() {
                         ))}
                     </div>
                 </div>
-
-                {/* Protocol Security Footer */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.8 }}
-                    className="mt-20 p-6 rounded-3xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/10 flex flex-col md:flex-row items-center justify-between gap-6"
-                >
-                    <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-600 dark:text-blue-400">
-                            <Shield className="w-6 h-6" />
-                        </div>
-                        <div>
-                            <p className="text-slate-900 dark:text-white font-bold">End-to-End Encryption</p>
-                            <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">AES-256 standard applied to all integration nodes.</p>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                        <div className="h-10 px-4 rounded-xl bg-white dark:bg-white/[0.03] border border-slate-200 dark:border-white/10 flex items-center gap-2 shadow-sm">
-                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                            <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-500 uppercase font-bold tracking-wider">Nodes Active</span>
-                        </div>
-                        <div className="h-10 px-4 rounded-xl bg-white dark:bg-white/[0.03] border border-slate-200 dark:border-white/10 flex items-center gap-2 shadow-sm">
-                            <span className="text-[10px] font-mono text-slate-400 uppercase font-bold tracking-wider">Lat: 12ms</span>
-                        </div>
-                    </div>
-                </motion.div>
             </div>
 
             {/* Fine Grid Pattern */}

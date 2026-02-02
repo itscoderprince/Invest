@@ -26,7 +26,7 @@ export function Hero() {
                     <div className="absolute h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
                 </div>
 
-                <div className="container relative z-10 mx-auto max-w-7xl grid lg:grid-cols-12 gap-6 lg:gap-8 items-center py-8 lg:py-12">
+                <div className="container relative z-10 mx-auto max-w-7xl grid lg:grid-cols-12 gap-6 lg:gap-8 items-center py-8">
 
                     {/* LEFT CONTENT */}
                     <div className="lg:col-span-7 xl:col-span-6 flex flex-col justify-center text-center lg:text-left">

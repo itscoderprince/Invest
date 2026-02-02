@@ -4,12 +4,12 @@ import Link from "next/link";
 import {
     Card,
     CardContent,
-    CardDescription,
     CardHeader,
     CardTitle
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
     Wallet,
     TrendingUp,
@@ -17,204 +17,257 @@ import {
     Users,
     ArrowUpRight,
     TrendingDown,
-    Activity
+    Activity,
+    DollarSign,
+    Euro,
+    Edit,
+    User,
+    ArrowUp
 } from "lucide-react";
 import {
-    AreaChart,
-    Area,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    ResponsiveContainer
-} from "recharts";
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+} from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
-
-const data = [
-    { name: "Week 1", value: 4000 },
-    { name: "Week 2", value: 4500 },
-    { name: "Week 3", value: 4200 },
-    { name: "Week 4", value: 5100 },
-    { name: "Week 5", value: 5800 },
-    { name: "Week 6", value: 6200 },
-    { name: "Week 7", value: 7000 },
-];
-
-const stats = [
-    {
-        name: "Total Invested",
-        value: "$12,450.00",
-        info: "+12% from last month",
-        icon: Wallet,
-        trend: "up",
-        color: "text-primary"
-    },
-    {
-        name: "Estimated Earnings",
-        value: "$1,240.50",
-        info: "Calculated weekly",
-        icon: TrendingUp,
-        trend: "up",
-        color: "text-emerald-500"
-    },
-    {
-        name: "Active Investments",
-        value: "4",
-        info: "In 3 different indexes",
-        icon: Activity,
-        trend: "neutral",
-        color: "text-blue-500"
-    },
-    {
-        name: "Referral Count",
-        value: "12",
-        info: "3 pending verification",
-        icon: Users,
-        trend: "up",
-        color: "text-amber-500"
-    },
-];
+import { DashboardBreadcrumbs } from "@/components/DashboardBreadcrumbs";
 
 export default function OverviewPage() {
     return (
-        <div className="space-y-6 lg:space-y-8">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Dashboard Overview</h1>
-                    <p className="text-muted-foreground text-sm">Welcome back! Here's a snapshot of your account performance.</p>
+        <div className="space-y-4 md:space-y-8">
+            {/* Breadcrumbs */}
+            <DashboardBreadcrumbs pageName="Overview" />
+
+            {/* ROW 1: Welcome & Banner */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-6 items-center">
+                <div className="md:col-span-12">
+                    <div className="rounded-2xl overflow-hidden bg-[#e1fff4] border border-emerald-100 dark:border-emerald-900/30 dark:bg-emerald-950/20 p-1">
+                        <a href="https://clients.xpo.ru/user/kyc/document" target="_blank" rel="noopener noreferrer" className="block relative group">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                                src="https://clients.xpo.ru/public/img1/kyc_top_banner.jpg"
+                                alt="KYC Banner"
+                                className="w-full h-auto rounded-xl shadow-sm transition-transform group-hover:scale-[1.02]"
+                            />
+                        </a>
+                    </div>
                 </div>
-                <Badge variant="outline" className="h-8 px-4 border-emerald-200 bg-emerald-50 text-emerald-700 font-bold gap-2">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    Market Live
-                </Badge>
             </div>
 
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                {stats.map((stat, i) => (
-                    <div key={i} className="p-5 md:p-6 rounded-[1.5rem] bg-white border border-border shadow-sm transition-all">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className={cn("w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center border border-border", stat.color)}>
-                                <stat.icon className="w-6 h-6" />
+            {/* ROW 2: Profile & Wallets */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 md:gap-6">
+                {/* Profile Card */}
+                <div className="lg:col-span-4">
+                    <Card className="h-full border-slate-200 dark:border-slate-800 shadow-sm rounded-2xl overflow-hidden">
+                        <CardContent className="p-4 md:p-6">
+                            <div className="flex items-start gap-4 mb-6">
+                                <Avatar className="h-[73px] w-[73px] border-4 border-white shadow-md">
+                                    <AvatarImage src="https://clients.xpo.ru/public/assets/images/user.png" />
+                                    <AvatarFallback className="bg-slate-100 text-slate-500 text-2xl">P</AvatarFallback>
+                                </Avatar>
+                                <div className="space-y-1 pt-1">
+                                    <h6 className="text-xs font-bold uppercase text-muted-foreground tracking-wider">Welcome</h6>
+                                    <div className="font-bold text-lg text-slate-900 dark:text-white">prince sharma</div>
+                                    <a href="https://clients.xpo.ru/editprofile" className="inline-flex items-center text-xs font-medium text-primary hover:underline">
+                                        itscoderprince@gmail.com <Edit className="w-3 h-3 ml-1" />
+                                    </a>
+                                </div>
                             </div>
-                            {stat.trend === "up" && <ArrowUpRight className="w-5 h-5 text-emerald-500 font-bold" />}
-                            {stat.trend === "down" && <TrendingDown className="w-5 h-5 text-rose-500 font-bold" />}
-                        </div>
-                        <div className="space-y-1">
-                            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">{stat.name}</p>
-                            <p className="text-2xl font-black tracking-tight">{stat.value}</p>
-                            <p className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-tighter mt-2">{stat.info}</p>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-            {/* Chart Section */}
-            <div className="p-5 lg:p-8 rounded-[1.5rem] lg:rounded-[2.5rem] bg-white border border-border shadow-sm overflow-hidden">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 lg:mb-10 gap-4">
-                    <div>
-                        <h3 className="text-xl font-bold text-slate-900 tracking-tight">Investment Growth</h3>
-                        <p className="text-xs font-medium text-muted-foreground">Historical performance of your active portfolio</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-50 border border-border text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" /> Portfolio Performance
-                        </div>
-                    </div>
+                            <div className="grid grid-cols-2 gap-3">
+                                <Button className="w-full bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 rounded-xl" asChild>
+                                    <Link href="/deposit">Deposit</Link>
+                                </Button>
+                                <Button variant="outline" className="w-full border-emerald-500 text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700 dark:text-emerald-400 dark:hover:bg-emerald-950/30 rounded-xl" asChild>
+                                    <Link href="/withdraw">Withdraw</Link>
+                                </Button>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </div>
-                <div className="h-[350px] w-full mt-4">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart data={data}>
-                            <defs>
-                                <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="oklch(0.25 0.08 240)" stopOpacity={0.15} />
-                                    <stop offset="95%" stopColor="oklch(0.25 0.08 240)" stopOpacity={0} />
-                                </linearGradient>
-                            </defs>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                            <XAxis
-                                dataKey="name"
-                                axisLine={false}
-                                tickLine={false}
-                                tick={{ fontSize: 10, fontWeight: 700, fill: '#94a3b8' }}
-                                dy={10}
-                            />
-                            <YAxis
-                                axisLine={false}
-                                tickLine={false}
-                                tick={{ fontSize: 10, fontWeight: 700, fill: '#94a3b8' }}
-                                tickFormatter={(value) => `$${value}`}
-                            />
-                            <Tooltip
-                                cursor={{ stroke: 'rgba(0,0,0,0.05)', strokeWidth: 2 }}
-                                contentStyle={{
-                                    borderRadius: '20px',
-                                    border: 'none',
-                                    boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)',
-                                    fontSize: '12px',
-                                    fontWeight: '700',
-                                    padding: '12px 16px'
-                                }}
-                            />
-                            <Area
-                                type="monotone"
-                                dataKey="value"
-                                stroke="oklch(0.25 0.08 240)"
-                                strokeWidth={4}
-                                fillOpacity={1}
-                                fill="url(#colorValue)"
-                                animationDuration={2000}
-                            />
-                        </AreaChart>
-                    </ResponsiveContainer>
+
+                {/* Wallet Details */}
+                <div className="lg:col-span-8">
+                    <Card className="h-full border-slate-200 dark:border-slate-800 shadow-sm rounded-2xl">
+                        <CardHeader className="pb-2">
+                            <div className="flex flex-col space-y-1">
+                                <h6 className="text-xs font-bold uppercase text-muted-foreground tracking-wider">Wallet details</h6>
+                                <span className="text-lg font-bold text-slate-900 dark:text-white">Your wallet</span>
+                            </div>
+                        </CardHeader>
+                        <CardContent className="p-4 md:p-6">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mt-2">
+                                {/* Wallet 1 */}
+                                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 transition-all hover:shadow-md hover:border-primary/20 group">
+                                    <span className="text-[10px] font-bold uppercase text-muted-foreground tracking-widest block mb-1">USD</span>
+                                    <div className="flex items-center gap-1 text-xl font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+                                        <DollarSign className="w-5 h-5 text-slate-400 group-hover:text-primary" /> 0.00
+                                    </div>
+                                </div>
+                                {/* Wallet 2 */}
+                                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 transition-all hover:shadow-md hover:border-blue-500/20 group">
+                                    <span className="text-[10px] font-bold uppercase text-muted-foreground tracking-widest block mb-1">EURO</span>
+                                    <div className="flex items-center gap-1 text-xl font-black text-slate-900 dark:text-white group-hover:text-blue-500 transition-colors">
+                                        <Euro className="w-5 h-5 text-slate-400 group-hover:text-blue-500" /> 0.00
+                                    </div>
+                                </div>
+                                {/* Wallet 3 */}
+                                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 transition-all hover:shadow-md hover:border-amber-500/20 group">
+                                    <span className="text-[10px] font-bold uppercase text-muted-foreground tracking-widest block mb-1">RUBLE</span>
+                                    <div className="flex items-center gap-1 text-xl font-black text-slate-900 dark:text-white group-hover:text-amber-500 transition-colors">
+                                        <span className="text-xl font-bold w-5 h-5 flex items-center justify-center text-slate-400 group-hover:text-amber-500">₽</span> 0.00
+                                    </div>
+                                </div>
+                                {/* Wallet 4 */}
+                                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 transition-all hover:shadow-md hover:border-purple-500/20 group">
+                                    <span className="text-[10px] font-bold uppercase text-muted-foreground tracking-widest block mb-1">REWARD</span>
+                                    <div className="flex items-center gap-1 text-xl font-black text-slate-900 dark:text-white group-hover:text-purple-500 transition-colors">
+                                        <DollarSign className="w-5 h-5 text-slate-400 group-hover:text-purple-500" /> 0.00
+                                    </div>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 pb-12">
-                {/* Quick Action Info */}
-                <div className="p-6 lg:p-10 rounded-[1.5rem] lg:rounded-[2.5rem] bg-slate-950 text-white relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 p-12 opacity-5 -translate-y-4 translate-x-4 group-hover:scale-110 group-hover:opacity-10 transition-all duration-700">
-                        <TrendingUp className="w-48 h-48" />
-                    </div>
-                    <div className="relative z-10 space-y-6">
-                        <div className="inline-flex px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-[10px] font-bold uppercase tracking-[0.2em] text-rose-500">
-                            Growth Opportunity
-                        </div>
-                        <h3 className="text-2xl lg:text-3xl font-black tracking-tighter">Ready to scale?</h3>
-                        <p className="text-slate-400 text-sm max-w-sm font-medium leading-relaxed">
-                            Submit a new investment request to diversify your portfolio. Standard processing time is 2-4 business hours.
-                        </p>
-                        <Button className="h-14 px-8 rounded-2xl bg-white text-slate-950 hover:bg-slate-100 font-bold text-xs uppercase tracking-widest gap-3 shadow-2xl transition-all" asChild>
-                            <Link href="/dashboard/investments">
-                                Start New Investment <ArrowUpRight className="w-5 h-5 text-rose-500" />
-                            </Link>
-                        </Button>
-                    </div>
-                </div>
+            {/* ROW 3: Investment Overview, My Investment, Top Portfolio */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
 
-                {/* Status Info */}
-                <div className="p-6 lg:p-10 rounded-[1.5rem] lg:rounded-[2.5rem] bg-white border border-border flex flex-col justify-center relative group overflow-hidden">
-                    <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:scale-110 transition-all duration-700">
-                        <ShieldCheck className="w-40 h-40" />
-                    </div>
-                    <div className="flex items-center gap-5 mb-8">
-                        <div className="w-16 h-16 rounded-[1.5rem] bg-primary/5 text-primary flex items-center justify-center border border-primary/10 shadow-inner">
-                            <ShieldCheck className="w-8 h-8" />
+                {/* Investment Overview */}
+                <Card className="border-slate-200 dark:border-slate-800 shadow-sm rounded-2xl flex flex-col">
+                    <CardContent className="p-4 md:p-6 flex-1">
+                        <div className="mb-4">
+                            <div className="text-lg font-bold text-slate-900 dark:text-white mb-1">Investment Overview</div>
+                            <h6 className="text-xs text-muted-foreground leading-relaxed">
+                                The investment overview of your platform. <br />
+                                <Link href="/portfolio" className="text-primary hover:underline font-medium">All Investment</Link>
+                            </h6>
                         </div>
-                        <div>
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">Security Status</p>
-                            <p className="text-xl font-bold tracking-tight">Level 1 KYC Verified</p>
+
+                        <Tabs defaultValue="overview" className="w-full">
+                            <TabsList className="bg-slate-100 dark:bg-slate-900 p-1 rounded-xl w-full grid grid-cols-3 mb-4">
+                                <TabsTrigger value="overview" className="rounded-lg text-xs font-semibold">Overview</TabsTrigger>
+                                <TabsTrigger value="six-months" className="rounded-lg text-xs font-semibold">6 Months</TabsTrigger>
+                                <TabsTrigger value="one-year" className="rounded-lg text-xs font-semibold">1 Year</TabsTrigger>
+                            </TabsList>
+                            <TabsContent value="overview" className="space-y-5 animate-in fade-in-50 duration-300">
+                                <div>
+                                    <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Currently Active Investment</div>
+                                    <div className="grid grid-cols-2 gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+                                        <div>
+                                            <div className="text-lg font-bold text-slate-900 dark:text-white">0.00 <span className="text-xs text-muted-foreground font-normal">USD</span></div>
+                                            <div className="text-[10px] uppercase font-bold text-slate-400 mt-1">Total Amount</div>
+                                        </div>
+                                        <div>
+                                            <div className="text-lg font-bold text-slate-900 dark:text-white">0.00</div>
+                                            <div className="text-xs font-bold text-emerald-500 flex items-center gap-1">
+                                                <ArrowUp className="w-3 h-3" /> 0.00%
+                                            </div>
+                                            <div className="text-[10px] uppercase font-bold text-slate-400 mt-1">Profit</div>
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-4 pt-4">
+                                        <div>
+                                            <div className="text-lg font-bold text-slate-900 dark:text-white">0.00 <span className="text-xs text-muted-foreground font-normal">USD</span></div>
+                                            <div className="text-[10px] uppercase font-bold text-slate-400 mt-1">Index Buy Amount</div>
+                                        </div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                                <div className="mt-6">
+                                    <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Investment in this Month</div>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <div className="text-lg font-bold text-slate-900 dark:text-white">0.00 <span className="text-xs text-muted-foreground font-normal">USD</span></div>
+                                            <div className="text-[10px] uppercase font-bold text-slate-400 mt-1">Index Buy Amount</div>
+                                        </div>
+                                        <div>
+                                            <div className="text-lg font-bold text-slate-900 dark:text-white">0.00</div>
+                                            <div className="text-xs font-bold text-emerald-500 flex items-center gap-1">
+                                                <ArrowUp className="w-3 h-3" /> 0.00%
+                                            </div>
+                                            <div className="text-[10px] uppercase font-bold text-slate-400 mt-1">Profit</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </TabsContent>
+                            <TabsContent value="six-months" className="text-center py-10 text-sm text-muted-foreground">No data for 6 months</TabsContent>
+                            <TabsContent value="one-year" className="text-center py-10 text-sm text-muted-foreground">No data for 1 year</TabsContent>
+                        </Tabs>
+                    </CardContent>
+                </Card>
+
+                {/* My Investment */}
+                <Card className="border-slate-200 dark:border-slate-800 shadow-sm rounded-2xl flex flex-col">
+                    <CardContent className="p-4 md:p-6 flex flex-col h-full">
+                        <div className="mb-4">
+                            <div className="text-lg font-bold text-slate-900 dark:text-white mb-1">My Investment</div>
+                            <h6 className="text-xs text-muted-foreground leading-relaxed">Your recent 5 purchased portfolio returns.</h6>
                         </div>
-                    </div>
-                    <div className="space-y-4">
-                        <p className="text-sm text-slate-500 leading-relaxed font-medium italic">
-                            "Your account is currently active within standard liquidity limits. For withdrawals exceeding $5,000, please complete Level 2 verification."
-                        </p>
-                        <Link href="/dashboard/kyc" className="text-xs font-bold text-primary hover:underline uppercase tracking-widest flex items-center gap-2">
-                            Complete Level 2 Transition <ArrowUpRight className="w-3 h-3" />
-                        </Link>
-                    </div>
-                </div>
+
+                        <div className="flex-1 flex items-center justify-center min-h-[200px] border-2 border-dashed border-slate-100 dark:border-slate-800 rounded-xl bg-slate-50/50 dark:bg-slate-900/50">
+                            <div className="text-center">
+                                <Activity className="w-10 h-10 text-slate-300 mx-auto mb-2" />
+                                <span className="text-sm font-medium text-slate-500">No record Found.</span>
+                            </div>
+                        </div>
+
+                        <div className="mt-6 text-center">
+                            <Button className="w-full rounded-xl bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20" asChild>
+                                <Link href="/portfolio">All Portfolio</Link>
+                            </Button>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Top Portfolio */}
+                <Card className="border-slate-200 dark:border-slate-800 shadow-sm rounded-2xl md:col-span-2 lg:col-span-1">
+                    <CardContent className="p-4 md:p-6">
+                        <div className="mb-6">
+                            <div className="text-lg font-bold text-slate-900 dark:text-white mb-1">Top Portfolio</div>
+                            <h6 className="text-xs text-muted-foreground leading-relaxed">In last 30 days top portfolio plans.</h6>
+                        </div>
+
+                        <div className="space-y-4">
+                            {[
+                                { img: "https://xpoadmin.s3.us-east-2.amazonaws.com/uploads/131_1743768455.png", code: "OMNI", name: "Omni Index", type: "fix-flex", roi: "4.77", link: "#" },
+                                { img: "https://xpoadmin.s3.us-east-2.amazonaws.com/uploads/506_1743768442.png", code: "FUINX", name: "NFT Fusion Index", type: "fix-flex", roi: "4.68", link: "#" },
+                                { img: "https://xpoadmin.s3.us-east-2.amazonaws.com/uploads/818_1745502945.png", code: "QUPAI", name: "QuantumPair Index", type: "fix-flex", roi: "4.53", link: "#" },
+                                { img: "https://xpoadmin.s3.us-east-2.amazonaws.com/uploads/936_1760175693.png", code: "HLFX", name: "Helix Flex Index", type: "fix-flex", roi: "4.34", link: "#" },
+                                { img: "https://xpoadmin.s3.us-east-2.amazonaws.com/uploads/105_1760175717.png", code: "EQFX", name: "EquaFlex Index", type: "fix-flex", roi: "4.22", link: "#" },
+                            ].map((item, i) => (
+                                <div key={i} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors group border border-transparent hover:border-slate-100 dark:hover:border-slate-800">
+                                    <div className="shrink-0">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img src={item.img} alt={item.code} className="w-10 h-10 rounded-full bg-white shadow-sm" />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="font-bold text-xs text-slate-900 dark:text-white truncate">{item.code}</div>
+                                        <div className="text-[10px] text-muted-foreground truncate">{item.name}</div>
+                                    </div>
+                                    <div className="shrink-0">
+                                        <Badge variant="outline" className="text-[9px] px-1.5 h-5 border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-500 uppercase tracking-wider">{item.type}</Badge>
+                                    </div>
+                                    <div className="shrink-0 text-right">
+                                        <div className="text-xs font-bold text-emerald-600 dark:text-emerald-500 flex items-center justify-end gap-1">
+                                            {item.roi}% <ArrowUp className="w-3 h-3" />
+                                        </div>
+                                        <a href={item.link} className="text-[10px] font-medium text-primary hover:underline block mt-0.5">View</a>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="mt-6 text-center flex justify-center gap-2">
+                            <Button size="sm" className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 rounded-xl px-4 text-xs font-bold" asChild>
+                                <Link href="/strategy/crypto">Crypto Index</Link>
+                            </Button>
+                            <Button variant="outline" size="sm" className="border-emerald-500 text-emerald-600 hover:bg-emerald-50 text-xs font-bold rounded-xl px-4" asChild>
+                                <Link href="/strategy/forex">Derivative Index</Link>
+                            </Button>
+                        </div>
+                    </CardContent>
+                </Card>
             </div>
         </div>
     );

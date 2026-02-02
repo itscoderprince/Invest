@@ -12,6 +12,9 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Activity, LifeBuoy } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import React from "react";
 
 export default function DashboardLayout({ children }) {
@@ -25,42 +28,21 @@ export default function DashboardLayout({ children }) {
                 <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-background sticky top-0 z-10 w-full transition-all">
                     <SidebarTrigger className="-ml-1" />
                     <div className="h-4 w-[1px] bg-border mx-2" />
-                    <Breadcrumb>
-                        <BreadcrumbList>
-                            <BreadcrumbItem>
-                                <BreadcrumbLink href="/dashboard/overview" className="uppercase text-[10px] font-bold tracking-widest text-muted-foreground/60">
-                                    InvestTrack
-                                </BreadcrumbLink>
-                            </BreadcrumbItem>
-                            {segments.map((segment, index) => {
-                                const href = `/${segments.slice(0, index + 1).join('/')}`;
-                                const isLast = index === segments.length - 1;
-                                const label = segment.replace(/-/g, ' ');
-
-                                if (segment.toLowerCase() === 'dashboard') return null;
-
-                                return (
-                                    <React.Fragment key={href}>
-                                        <BreadcrumbSeparator className="opacity-20" />
-                                        <BreadcrumbItem>
-                                            {isLast ? (
-                                                <BreadcrumbPage className="uppercase text-[10px] font-bold tracking-widest text-primary">
-                                                    {label}
-                                                </BreadcrumbPage>
-                                            ) : (
-                                                <BreadcrumbLink href={href} className="uppercase text-[10px] font-bold tracking-widest text-muted-foreground/60">
-                                                    {label}
-                                                </BreadcrumbLink>
-                                            )}
-                                        </BreadcrumbItem>
-                                    </React.Fragment>
-                                );
-                            })}
-                        </BreadcrumbList>
-                    </Breadcrumb>
+                    <div className="ml-auto flex items-center gap-2">
+                        <Link href="/dashboard/activity">
+                            <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all">
+                                <Activity className="h-5 w-5" />
+                            </Button>
+                        </Link>
+                        <Link href="/dashboard/support">
+                            <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all">
+                                <LifeBuoy className="h-5 w-5" />
+                            </Button>
+                        </Link>
+                    </div>
                 </header>
-                <div className="p-4 md:p-8 flex-1">
-                    <div className="max-w-6xl mx-auto space-y-6 lg:space-y-10 pb-20">
+                <div className="p-3 md:p-8 flex-1">
+                    <div className="max-w-6xl mx-auto space-y-4 lg:space-y-10 pb-20">
                         {children}
                     </div>
                 </div>

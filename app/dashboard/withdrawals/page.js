@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { DashboardBreadcrumbs } from "@/components/DashboardBreadcrumbs";
 
 const history = [
     { id: "WID-102", amount: "$1,200.00", date: "2024-01-18", status: "Approved" },
@@ -46,28 +47,29 @@ export default function WithdrawalPage() {
     };
 
     return (
-        <div className="space-y-8">
-            <div>
+        <div className="space-y-4 md:space-y-8">
+            <DashboardBreadcrumbs pageName="Withdrawals" />
+            <div className="hidden md:block">
                 <h1 className="text-3xl font-bold tracking-tight">Withdrawals</h1>
                 <p className="text-muted-foreground text-sm">Request manual payouts to your bank account.</p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
                 {/* Withdrawal Form */}
                 <div className="lg:col-span-2 space-y-6">
                     <Card className="border-none shadow-sm bg-white overflow-hidden">
-                        <CardHeader className="pb-8">
+                        <CardHeader className="pb-4 md:pb-8">
                             <div className="flex items-center gap-4">
-                                <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shadow-inner">
-                                    <Wallet className="w-7 h-7" />
+                                <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shadow-inner">
+                                    <Wallet className="w-6 h-6 md:w-7 md:h-7" />
                                 </div>
                                 <div>
                                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Available Balance</p>
-                                    <p className="text-3xl font-bold tracking-tight text-primary">$12,450.00</p>
+                                    <p className="text-2xl md:text-3xl font-bold tracking-tight text-primary">$12,450.00</p>
                                 </div>
                             </div>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="p-4 md:p-6">
                             <form onSubmit={handleWithdraw} className="space-y-6">
                                 <div className="space-y-2">
                                     <Label htmlFor="amount" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Withdrawal Amount ($)</Label>

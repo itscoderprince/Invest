@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { DashboardBreadcrumbs } from "@/components/DashboardBreadcrumbs";
 
 export default function KYCPage() {
     const [status, setStatus] = useState("pending");
@@ -32,9 +33,10 @@ export default function KYCPage() {
     };
 
     return (
-        <div className="space-y-8 max-w-5xl">
+        <div className="space-y-4 md:space-y-8 max-w-5xl">
+            <DashboardBreadcrumbs pageName="KYC" />
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
+                <div className="hidden md:block">
                     <h1 className="text-3xl font-bold tracking-tight">KYC Verification</h1>
                     <p className="text-muted-foreground text-sm">Secure your account by verifying your identity documents.</p>
                 </div>
@@ -58,7 +60,7 @@ export default function KYCPage() {
                 status === "pending" && "bg-amber-50",
                 status === "rejected" && "bg-rose-50"
             )}>
-                <CardContent className="p-8 flex items-center gap-6">
+                <CardContent className="p-4 md:p-8 flex items-center gap-4 md:gap-6">
                     <div className={cn(
                         "w-16 h-16 rounded-[2rem] flex items-center justify-center shrink-0 shadow-lg",
                         status === "approved" && "bg-emerald-500 text-white",
@@ -80,7 +82,7 @@ export default function KYCPage() {
                 </CardContent>
             </Card>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                 {[
                     { name: "Aadhaar Card", icon: CreditCard, desc: "Front & back of your ID" },
                     { name: "PAN Card", icon: FileText, desc: "Personal tax identifier" },
