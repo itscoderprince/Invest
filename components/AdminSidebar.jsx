@@ -13,6 +13,8 @@ import {
     LogOut,
     ShieldAlert,
     ChevronRight,
+    ArrowDownToLine,
+    MessageSquare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -38,7 +40,9 @@ const adminMenuItems = [
     { name: "Active Investors", icon: Users, href: "/admin/users" },
     { name: "Compliance Desk", icon: UserCheck, href: "/admin/kyc" },
     { name: "Capital Ledger", icon: CreditCard, href: "/admin/investments" },
+    { name: "Withdrawal Desk", icon: ArrowDownToLine, href: "/admin/withdrawals" },
     { name: "Yield Adjuster", icon: LineChart, href: "/admin/returns" },
+    { name: "Support Center", icon: MessageSquare, href: "/admin/support" },
     { name: "Audit Vault", icon: ClipboardList, href: "/admin/logs" },
 ];
 

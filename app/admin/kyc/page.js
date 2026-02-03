@@ -22,19 +22,20 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { AdminBreadcrumbs } from "@/components/AdminBreadcrumbs";
 import {
-    UserCheck,
-    Search,
-    ZoomIn,
-    CheckCircle2,
-    XSquare,
-    FileText,
-    BadgeCheck,
-    X,
-    ShieldAlert,
     ScanFace,
     Clock,
-    Eye
+    Search,
+    Eye,
+    CheckCircle2,
+    XCircle,
+    FileText,
+    ShieldCheck,
+    AlertCircle,
+    ShieldAlert,
+    ZoomIn,
+    XSquare
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -59,53 +60,54 @@ export default function AdminKYCManger() {
     };
 
     return (
-        <div className="space-y-8">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-foreground">Compliance Desk</h1>
-                    <p className="text-muted-foreground text-sm">Review legal documentation and authorize investor tier upgrades.</p>
+        <div className="space-y-4">
+            <AdminBreadcrumbs />
+            <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                    <Badge className="bg-amber-500/20 text-amber-600 border-amber-500/20 text-[10px] font-bold px-2 py-0.5 uppercase tracking-widest">COMPLIANCE</Badge>
+                    <p className="text-[11px] text-slate-500 font-medium opacity-60">Legal document review node</p>
                 </div>
-                <div className="relative flex-1 max-w-sm group">
-                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                <div className="relative flex-1 max-w-xs group">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500 group-focus-within:text-primary transition-colors" />
                     <Input
-                        placeholder="Search by name or reference..."
-                        className="pl-11 h-11 bg-white border-primary/5 focus-visible:ring-primary/20 rounded-2xl transition-all"
+                        placeholder="Search ref..."
+                        className="pl-9 h-9 bg-white/5 border-white/10 focus-visible:ring-primary/20 rounded-xl text-xs text-slate-200 transition-all"
                     />
                 </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {pendingKYC.map((kyc) => (
-                    <Card key={kyc.id} className="border-none shadow-sm bg-white overflow-hidden group hover:shadow-xl transition-all duration-300">
-                        <CardHeader className="p-6 pb-4">
+                    <Card key={kyc.id} className="border-none shadow-sm bg-white overflow-hidden group hover:shadow-md transition-all rounded-xl">
+                        <CardHeader className="p-4 pb-2">
                             <div className="flex items-start justify-between">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center border border-primary/10 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
-                                        <ScanFace className="w-6 h-6" />
+                                <div className="flex items-center gap-3">
+                                    <div className="w-9 h-9 rounded-xl bg-primary/5 flex items-center justify-center border border-primary/10 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                                        <ScanFace className="w-5 h-5" />
                                     </div>
                                     <div>
-                                        <h4 className="font-bold tracking-tight text-foreground">{kyc.user}</h4>
-                                        <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest opacity-60">{kyc.id}</p>
+                                        <h4 className="text-sm font-bold tracking-tight text-foreground leading-tight">{kyc.user}</h4>
+                                        <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest opacity-40">{kyc.id}</p>
                                     </div>
                                 </div>
-                                <Badge variant="outline" className="bg-amber-50 text-amber-600 border-none font-bold text-[9px] uppercase tracking-widest px-2.5 py-1 animate-pulse">
-                                    Awaiting Review
+                                <Badge variant="outline" className="bg-amber-50 text-amber-600 border-none font-bold text-[8px] uppercase tracking-widest px-1.5 py-0.5 animate-pulse">
+                                    Pending
                                 </Badge>
                             </div>
                         </CardHeader>
-                        <CardContent className="px-6 py-4 space-y-4">
+                        <CardContent className="px-4 py-2 space-y-2">
                             <div className="flex items-center justify-between">
-                                <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-tighter">Submission Time</span>
-                                <span className="text-xs font-bold text-foreground flex items-center gap-1.5"><Clock className="w-3 h-3 opacity-40" /> {kyc.date}</span>
+                                <span className="text-[10px] font-bold text-muted-foreground uppercase">Submission</span>
+                                <span className="text-[11px] font-bold text-foreground flex items-center gap-1"><Clock className="w-2.5 h-2.5 opacity-40" /> {kyc.date}</span>
                             </div>
                             <div className="flex items-center justify-between">
-                                <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-tighter">Credential Level</span>
-                                <span className="text-xs font-bold text-primary">{kyc.type}</span>
+                                <span className="text-[10px] font-bold text-muted-foreground uppercase">Tier</span>
+                                <span className="text-[11px] font-bold text-primary">{kyc.type}</span>
                             </div>
                         </CardContent>
-                        <CardFooter className="p-6 pt-0">
-                            <Button className="w-full rounded-2xl h-11 bg-slate-950 hover:bg-slate-900 shadow-xl shadow-slate-950/10 font-bold text-xs gap-2" onClick={() => setSelectedKyc(kyc)}>
-                                <Eye className="w-4 h-4" /> Initialize Review
+                        <CardFooter className="p-4 pt-2">
+                            <Button size="sm" className="w-full rounded-lg h-9 bg-slate-950 hover:bg-slate-900 font-bold text-[10px] gap-2" onClick={() => setSelectedKyc(kyc)}>
+                                <Eye className="w-3.5 h-3.5" /> Initialize Review
                             </Button>
                         </CardFooter>
                     </Card>

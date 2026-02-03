@@ -22,45 +22,16 @@ export default function AdminLayout({ children }) {
         <SidebarProvider defaultOpen={true}>
             <AdminSidebar />
             <SidebarInset className="bg-slate-950">
-                <header className="flex h-16 shrink-0 items-center gap-2 border-b border-white/5 px-4 bg-slate-950 sticky top-0 z-10 w-full transition-all">
+                <header className="flex h-12 shrink-0 items-center gap-2 border-b border-white/5 px-4 bg-slate-950 sticky top-0 z-10 w-full transition-all">
                     <SidebarTrigger className="-ml-1 text-slate-400" />
                     <div className="h-4 w-[1px] bg-white/10 mx-2" />
-                    <Breadcrumb>
-                        <BreadcrumbList>
-                            <BreadcrumbItem>
-                                <BreadcrumbLink href="/admin/dashboard" className="uppercase text-[10px] font-bold tracking-widest text-slate-500">
-                                    CORE TERMINAL
-                                </BreadcrumbLink>
-                            </BreadcrumbItem>
-                            {segments.map((segment, index) => {
-                                const href = `/${segments.slice(0, index + 1).join('/')}`;
-                                const isLast = index === segments.length - 1;
-                                const label = segment.replace(/-/g, ' ');
-
-                                if (segment.toLowerCase() === 'admin') return null;
-
-                                return (
-                                    <React.Fragment key={href}>
-                                        <BreadcrumbSeparator className="opacity-10 text-slate-500" />
-                                        <BreadcrumbItem>
-                                            {isLast ? (
-                                                <BreadcrumbPage className="uppercase text-[10px] font-bold tracking-widest text-white">
-                                                    {label}
-                                                </BreadcrumbPage>
-                                            ) : (
-                                                <BreadcrumbLink href={href} className="uppercase text-[10px] font-bold tracking-widest text-slate-500">
-                                                    {label}
-                                                </BreadcrumbLink>
-                                            )}
-                                        </BreadcrumbItem>
-                                    </React.Fragment>
-                                );
-                            })}
-                        </BreadcrumbList>
-                    </Breadcrumb>
+                    <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">System Online</span>
+                    </div>
                 </header>
-                <div className="p-6 md:p-8 flex-1">
-                    <div className="max-w-6xl mx-auto space-y-10 pb-20 text-slate-200">
+                <div className="p-4 md:p-5 flex-1">
+                    <div className="max-w-6xl mx-auto space-y-4 pb-10 text-slate-200">
                         {children}
                     </div>
                 </div>

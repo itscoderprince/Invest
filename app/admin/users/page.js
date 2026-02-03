@@ -20,16 +20,19 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { AdminBreadcrumbs } from "@/components/AdminBreadcrumbs";
 import {
     Users,
     Search,
-    MoreVertical,
-    ShieldCheck,
-    Mail,
-    Ban,
     Filter,
     Download,
-    UserCircle
+    Mail,
+    Ban,
+    MoreVertical,
+    UserPlus,
+    ShieldCheck,
+    ShieldAlert,
+    Activity
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -43,33 +46,33 @@ const usersData = [
 
 export default function AdminUsersPage() {
     return (
-        <div className="space-y-8">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Active Investors</h1>
-                    <p className="text-muted-foreground text-sm">Comprehensive directory of all system participants and their portfolio statuses.</p>
+        <div className="space-y-4">
+            <AdminBreadcrumbs />
+            <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                    <Badge className="bg-primary/20 text-primary border-primary/20 text-[10px] font-bold px-2 py-0.5 uppercase tracking-widest">INVESTORS</Badge>
+                    <p className="text-[11px] text-slate-500 font-medium opacity-60">Global participant registry</p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <Button variant="outline" className="rounded-xl border-dashed">
-                        <Filter className="w-4 h-4 mr-2" /> Advanced Filters
+                    <Button variant="outline" size="sm" className="rounded-lg border-dashed h-8 text-[10px] font-bold uppercase tracking-widest bg-white/5 border-white/10 hover:bg-white/10 text-slate-400">
+                        <Filter className="w-3 h-3 mr-1.5" /> Filtering
                     </Button>
-                    <Button className="rounded-xl shadow-xl shadow-primary/20 gap-2">
-                        <Download className="w-4 h-4" /> Export Audit Trail
+                    <Button size="sm" className="rounded-lg h-8 text-[10px] font-bold uppercase tracking-widest bg-slate-900 border border-white/10 hover:bg-slate-800 text-white shadow-lg shadow-black/20">
+                        <Download className="w-3 h-3 mr-1.5" /> Export
                     </Button>
                 </div>
             </div>
 
-            <Card className="border-none shadow-sm bg-white overflow-hidden">
-                <CardHeader className="p-6 border-b border-border bg-muted/20">
+            <Card className="border-none shadow-sm bg-white overflow-hidden rounded-xl">
+                <CardHeader className="p-4 border-b border-border bg-muted/10">
                     <div className="flex items-center justify-between gap-4">
-                        <div className="relative flex-1 max-w-md group">
-                            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                        <div className="relative flex-1 max-w-sm group">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground group-focus-within:text-primary transition-colors" />
                             <Input
-                                placeholder="Search by name, email or institutional ID..."
-                                className="pl-11 h-12 bg-white border-primary/5 focus-visible:ring-primary/20 rounded-2xl transition-all"
+                                placeholder="Search records..."
+                                className="pl-9 h-9 bg-white border-primary/5 focus-visible:ring-primary/20 rounded-xl text-xs transition-all"
                             />
                         </div>
-                        <p className="text-[10px] font-bold text-muted-foreground uppercase opacity-40 hidden md:block">{usersData.length} records detected</p>
                     </div>
                 </CardHeader>
                 <Table>
@@ -85,23 +88,23 @@ export default function AdminUsersPage() {
                     <TableBody>
                         {usersData.map((user) => (
                             <TableRow key={user.id} className="border-border hover:bg-muted/10 transition-colors">
-                                <TableCell className="px-6 py-5">
-                                    <div className="flex items-center gap-4">
-                                        <Avatar className="h-11 w-11 border-2 border-primary/5 shadow-inner">
-                                            <AvatarFallback className="bg-primary/10 text-primary font-bold text-xs">{user.name.charAt(0)}</AvatarFallback>
+                                <TableCell className="px-5 py-3">
+                                    <div className="flex items-center gap-3">
+                                        <Avatar className="h-8 w-8 border border-primary/5 shadow-inner">
+                                            <AvatarFallback className="bg-primary/10 text-primary font-bold text-[10px]">{user.name.charAt(0)}</AvatarFallback>
                                         </Avatar>
                                         <div className="flex flex-col">
-                                            <span className="text-sm font-bold tracking-tight">{user.name}</span>
-                                            <span className="text-[11px] text-muted-foreground font-medium opacity-60">{user.email}</span>
+                                            <span className="text-xs font-bold tracking-tight">{user.name}</span>
+                                            <span className="text-[10px] text-muted-foreground font-medium opacity-60 leading-none">{user.email}</span>
                                         </div>
                                     </div>
                                 </TableCell>
-                                <TableCell className="px-6 text-sm font-bold tracking-tight text-primary">{user.balance}</TableCell>
-                                <TableCell className="px-6">
+                                <TableCell className="px-5 text-xs font-bold tracking-tight text-primary">{user.balance}</TableCell>
+                                <TableCell className="px-5">
                                     <Badge
                                         variant="outline"
                                         className={cn(
-                                            "bg-white border-none font-bold text-[9px] uppercase tracking-widest px-2.5 py-1 shadow-sm",
+                                            "bg-white border-none font-bold text-[8px] uppercase tracking-widest px-1.5 py-0.5 shadow-sm",
                                             user.kyc === "Level 2" ? "text-emerald-700 bg-emerald-50" :
                                                 user.kyc === "Level 1" ? "text-blue-700 bg-blue-50" : "text-slate-500 bg-slate-50"
                                         )}
@@ -109,21 +112,21 @@ export default function AdminUsersPage() {
                                         {user.kyc}
                                     </Badge>
                                 </TableCell>
-                                <TableCell className="px-6">
-                                    <div className="flex items-center gap-2">
+                                <TableCell className="px-5">
+                                    <div className="flex items-center gap-1.5">
                                         <div className={cn(
-                                            "w-2 h-2 rounded-full",
-                                            user.status === "Active" ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" :
-                                                user.status === "Pending" ? "bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]" : "bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]"
+                                            "w-1.5 h-1.5 rounded-full",
+                                            user.status === "Active" ? "bg-emerald-500" :
+                                                user.status === "Pending" ? "bg-amber-500" : "bg-rose-500"
                                         )} />
-                                        <span className="text-xs font-bold tracking-tight">{user.status}</span>
+                                        <span className="text-[10px] font-bold tracking-tight">{user.status}</span>
                                     </div>
                                 </TableCell>
-                                <TableCell className="px-6 text-right">
-                                    <div className="flex items-center justify-end gap-1.5 opacity-60 hover:opacity-100 transition-opacity">
-                                        <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl hover:bg-blue-50 hover:text-blue-600"><Mail className="w-4 h-4" /></Button>
-                                        <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl hover:bg-rose-50 hover:text-rose-600"><Ban className="w-4 h-4" /></Button>
-                                        <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl"><MoreVertical className="w-4 h-4" /></Button>
+                                <TableCell className="px-5 text-right">
+                                    <div className="flex items-center justify-end gap-1 opacity-60 hover:opacity-100 transition-opacity">
+                                        <Button variant="ghost" size="icon" className="h-7 w-7 rounded-lg hover:bg-blue-50 hover:text-blue-600"><Mail className="w-3.5 h-3.5" /></Button>
+                                        <Button variant="ghost" size="icon" className="h-7 w-7 rounded-lg hover:bg-rose-50 hover:text-rose-600"><Ban className="w-3.5 h-3.5" /></Button>
+                                        <Button variant="ghost" size="icon" className="h-7 w-7 rounded-lg"><MoreVertical className="w-3.5 h-3.5" /></Button>
                                     </div>
                                 </TableCell>
                             </TableRow>

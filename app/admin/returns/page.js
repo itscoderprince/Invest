@@ -20,6 +20,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { AdminBreadcrumbs } from "@/components/AdminBreadcrumbs";
 import {
     LineChart,
     TrendingUp,
@@ -56,11 +57,12 @@ export default function ReturnsManagerPage() {
     };
 
     return (
-        <div className="space-y-10">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-foreground">Yield Adjuster</h1>
-                    <p className="text-muted-foreground text-sm font-medium">Calibrate index performance and execute bulk dividend distributions.</p>
+        <div className="space-y-4">
+            <AdminBreadcrumbs />
+            <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                    <Badge className="bg-primary/20 text-primary border-primary/20 text-[10px] font-bold px-2 py-0.5 uppercase tracking-widest">Returns</Badge>
+                    <p className="text-[11px] text-slate-500 font-medium opacity-60">Index performance calibration node</p>
                 </div>
                 <div className="flex items-center gap-4">
                     <Button variant="outline" className="rounded-2xl border-dashed h-12 px-6 font-bold text-xs uppercase tracking-widest text-slate-500">
