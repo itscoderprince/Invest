@@ -14,11 +14,16 @@ import {
     ChevronRight,
     Activity,
     LifeBuoy,
+    Bell,
+    Mail,
+    ArrowUpRight,
+    TrendingUp
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
     Sidebar,
     SidebarContent,
@@ -42,26 +47,29 @@ export function AppSidebar() {
     const { setOpenMobile, state } = useSidebar();
 
     return (
-        <Sidebar collapsible="icon">
-            <SidebarHeader className="h-20 flex items-center justify-center group-data-[collapsible=icon]:px-0 px-6">
+        <Sidebar collapsible="icon" className="border-r border-border bg-card/50 backdrop-blur-xl">
+            <SidebarHeader className="h-16 flex items-center px-4 group-data-[collapsible=icon]:px-0">
                 <div className="flex items-center gap-3 w-full group-data-[collapsible=icon]:justify-center">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary shadow-lg shadow-primary/20">
-                        <Shield className="h-6 w-6 text-white" />
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 transition-transform hover:scale-105 duration-300">
+                        <Shield className="h-5 w-5" />
                     </div>
-                    <div className="flex flex-col group-data-[collapsible=icon]:hidden">
-                        <span className="text-xl font-bold tracking-tight text-foreground">InvestTrack</span>
-                        <p className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest leading-none">Investor Node</p>
+                    <div className="flex flex-col group-data-[collapsible=icon]:hidden overflow-hidden transition-all duration-300">
+                        <span className="text-sm font-bold tracking-tight text-foreground">{SITE_CONFIG.name}</span>
+                        <div className="flex items-center gap-1.5">
+                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Investor Node</p>
+                        </div>
                     </div>
                 </div>
             </SidebarHeader>
 
-            <SidebarContent className="px-3 group-data-[collapsible=icon]:px-0 py-4">
+            <SidebarContent className="px-2 group-data-[collapsible=icon]:px-0 py-2">
                 <SidebarGroup>
-                    <SidebarGroupLabel className="px-4 mb-2 uppercase text-[10px] font-bold tracking-widest text-muted-foreground/50 group-data-[collapsible=icon]:hidden">
-                        Core Modules
+                    <SidebarGroupLabel className="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50 group-data-[collapsible=icon]:hidden">
+                        Platform Navigation
                     </SidebarGroupLabel>
                     <SidebarGroupContent>
-                        <SidebarMenu>
+                        <SidebarMenu className="gap-1">
                             {DASHBOARD_MENU.map((item) => {
                                 const isActive = pathname === item.href;
                                 return (
@@ -70,16 +78,17 @@ export function AppSidebar() {
                                             asChild
                                             isActive={isActive}
                                             tooltip={item.name}
-                                            size="lg"
                                             className={cn(
-                                                "h-12 rounded-xl font-bold transition-all data-[active=true]:bg-primary data-[active=true]:text-primary-foreground data-[active=true]:shadow-lg data-[active=true]:shadow-primary/20 hover:bg-primary/5 hover:text-primary",
-                                                state === "collapsed" && "justify-center px-0!"
+                                                "h-10 rounded-lg transition-all duration-300 font-bold",
+                                                isActive
+                                                    ? "bg-primary text-primary-foreground shadow-sm shadow-primary/25 translate-x-1"
+                                                    : "text-muted-foreground hover:bg-muted hover:text-foreground hover:translate-x-0.5"
                                             )}
                                         >
                                             <Link href={item.href} onClick={() => setOpenMobile(false)}>
-                                                <item.icon className={cn("h-5 w-5 shrink-0 transition-colors", isActive ? "text-primary-foreground" : "text-primary/60 group-hover:text-primary")} />
+                                                <item.icon className={cn("h-4 w-4 shrink-0 transition-colors", isActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-foreground")} />
                                                 <span className="ml-3 group-data-[collapsible=icon]:hidden">{item.name}</span>
-                                                {isActive && <ChevronRight className="ml-auto w-4 h-4 opacity-50 group-data-[collapsible=icon]:hidden" />}
+                                                {isActive && <ChevronRight className="ml-auto w-3 h-3 opacity-50 group-data-[collapsible=icon]:hidden" />}
                                             </Link>
                                         </SidebarMenuButton>
                                     </SidebarMenuItem>
@@ -88,32 +97,47 @@ export function AppSidebar() {
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
+
+                <SidebarGroup className="mt-4 group-data-[collapsible=icon]:hidden">
+                    <SidebarGroupLabel className="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50">
+                        Live Analytics
+                    </SidebarGroupLabel>
+                    <SidebarGroupContent>
+                        <div className="px-3 space-y-4">
+                            <div className="p-3 rounded-xl bg-muted/30 border border-border group-data-[collapsible=icon]:hidden transition-all hover:bg-muted/50">
+                                <div className="flex items-center justify-between mb-2">
+                                    <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider">Portfolio Growth</p>
+                                    <TrendingUp className="w-3 h-3 text-emerald-500" />
+                                </div>
+                                <div className="flex items-baseline gap-2">
+                                    <p className="text-lg font-black tracking-tight text-foreground">$12,450</p>
+                                    <Badge variant="outline" className="text-[8px] h-4 px-1 border-emerald-200 bg-emerald-50 text-emerald-600 font-bold">+12.4%</Badge>
+                                </div>
+                                <div className="w-full bg-border h-1 rounded-full mt-3 overflow-hidden">
+                                    <div className="bg-primary h-full rounded-full w-[65%] animate-in slide-in-from-left duration-1000" />
+                                </div>
+                            </div>
+                        </div>
+                    </SidebarGroupContent>
+                </SidebarGroup>
             </SidebarContent>
 
-            <SidebarFooter className="p-4 group-data-[collapsible=icon]:p-2 gap-6">
-                <div className="rounded-2xl bg-slate-50 border border-border p-4 group-data-[collapsible=icon]:hidden">
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Portfolio Value</p>
-                    <p className="text-xl font-black tracking-tight text-primary">$12,450.00</p>
-                    <Separator className="my-3 opacity-50" />
-                    <Link href="/dashboard/investments" className="text-[10px] font-bold text-primary hover:underline flex items-center gap-1.5 uppercase tracking-tighter">
-                        Manage Assets <ChevronRight className="w-3 h-3" />
-                    </Link>
-                </div>
-
-                <div className="flex items-center justify-between group-data-[collapsible=icon]:justify-center px-1">
-                    <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10 border-2 border-primary/20 shrink-0">
-                            <AvatarImage src="https://github.com/shadcn.png" />
-                            <AvatarFallback>JD</AvatarFallback>
-                        </Avatar>
-                        <div className="flex flex-col group-data-[collapsible=icon]:hidden">
-                            <span className="text-sm font-bold truncate w-32 text-foreground">John Doe</span>
-                            <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-tighter">Standard Tier</span>
+            <SidebarFooter className="p-2 border-t border-border group-data-[collapsible=icon]:p-0">
+                <div className="flex items-center gap-3 p-2 rounded-xl group-data-[collapsible=icon]:justify-center hover:bg-muted/50 transition-colors duration-300">
+                    <Avatar className="h-9 w-9 border border-border shrink-0 shadow-sm">
+                        <AvatarImage src="" />
+                        <AvatarFallback className="bg-primary/5 text-primary text-xs font-bold">PS</AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col group-data-[collapsible=icon]:hidden overflow-hidden min-w-0">
+                        <span className="text-xs font-bold text-foreground truncate">Prince Sharma</span>
+                        <div className="flex items-center gap-1">
+                            <Badge variant="outline" className="text-[8px] h-3 px-1 border-primary/20 text-primary font-bold bg-primary/5">TIER_2</Badge>
+                            <span className="text-[9px] text-muted-foreground font-medium truncate uppercase tracking-tighter">Verified</span>
                         </div>
                     </div>
-                    <Button variant="ghost" size="icon" className="text-rose-500 hover:bg-rose-500/10 rounded-xl group-data-[collapsible=icon]:hidden" asChild>
+                    <Button variant="ghost" size="icon" className="ml-auto h-8 w-8 text-muted-foreground hover:text-destructive group-data-[collapsible=icon]:hidden transition-colors" asChild>
                         <Link href={ROUTES.AUTH.LOGIN}>
-                            <LogOut className="h-5 w-5" />
+                            <LogOut className="h-4 w-4" />
                         </Link>
                     </Button>
                 </div>

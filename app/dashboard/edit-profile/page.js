@@ -1,8 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import {
     Upload,
-    AlertCircle,
     User,
     Phone,
     Mail,
@@ -21,7 +21,13 @@ import {
     Key,
     ShieldCheck,
     UserPlus,
-    Heart
+    Heart,
+    ChevronRight,
+    Zap,
+    ShieldAlert,
+    Clock,
+    Award,
+    ArrowUpRight
 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -53,8 +59,11 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ROUTES } from "@/lib/routes";
+import { Separator } from "@/components/ui/separator";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
+import { Badge } from "@/components/ui/badge";
 
 // Schemas
 const personalSchema = z.object({
@@ -151,697 +160,346 @@ export default function EditProfilePage() {
         }
     });
 
-    const onSubmitPersonal = (data) => console.log("Personal:", data);
-    const onSubmitFinancial = (data) => console.log("Financial:", data);
-    const onSubmitPassword = (data) => console.log("Password:", data);
-    const onSubmitNominee = (data) => console.log("Nominee:", data);
+    const onSubmit = (data) => {
+        toast.success("Account node configurations updated successfully.");
+        console.log("Form Data:", data);
+    };
 
     return (
-        <div className="container mx-auto space-y-4 md:space-y-6 px-0 sm:px-4">
-            {/* Breadcrumbs */}
-            <div className="px-4 sm:px-0">
-                <DashboardBreadcrumbs pageName="Edit Profile" />
+        <div className="space-y-8 animate-in fade-in duration-700">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 className="text-2xl font-black tracking-tight text-foreground uppercase italic pb-1">Account Configurations</h1>
+                    <p className="text-sm text-muted-foreground font-medium">Manage your personal node metadata and security protocols.</p>
+                </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8">
-                {/* Main Content - Left Column */}
-                <div className="lg:col-span-8">
-                    <Card className="border-none sm:border shadow-none sm:shadow-sm">
-                        <CardContent className="p-0 sm:p-6">
-                            <Tabs defaultValue="personal-data" className="w-full">
-                                <div className="px-4 sm:px-0 pt-2 sm:pt-0">
-                                    <TabsList className="grid w-full grid-cols-4 mb-6 md:mb-10 h-auto gap-1 p-1 bg-slate-100/50 dark:bg-slate-900/50 rounded-xl">
-                                        <TabsTrigger value="personal-data" className="py-3 px-0.5 rounded-lg font-bold text-[10px] sm:text-xs md:text-sm tracking-wide data-[state=active]:bg-white dark:data-[state=active]:bg-slate-800 shadow-sm transition-all text-slate-500 data-[state=active]:text-primary leading-none">
-                                            Personal
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
+                {/* Main Content */}
+                <div className="xl:col-span-8">
+                    <Card className="border-border shadow-none bg-card/50 backdrop-blur-xl overflow-hidden">
+                        <CardHeader className="p-0 border-b bg-muted/20">
+                            <Tabs defaultValue="personal" className="w-full">
+                                <TabsList className="flex w-full h-14 bg-transparent rounded-none p-0 border-none justify-start px-6 gap-8">
+                                    {["personal", "financial", "security", "nominee"].map((tab) => (
+                                        <TabsTrigger
+                                            key={tab}
+                                            value={tab}
+                                            className="h-14 rounded-none border-b-2 border-transparent data-[state=active]:border-primary bg-transparent font-black text-[10px] uppercase tracking-[0.2em] text-muted-foreground data-[state=active]:text-primary data-[state=active]:shadow-none transition-all px-0"
+                                        >
+                                            {tab}
                                         </TabsTrigger>
-                                        <TabsTrigger value="financial-data" className="py-3 px-0.5 rounded-lg font-bold text-[10px] sm:text-xs md:text-sm tracking-wide data-[state=active]:bg-white dark:data-[state=active]:bg-slate-800 shadow-sm transition-all text-slate-500 data-[state=active]:text-primary leading-none">
-                                            Financial
-                                        </TabsTrigger>
-                                        <TabsTrigger value="password" className="py-3 px-0.5 rounded-lg font-bold text-[10px] sm:text-xs md:text-sm tracking-wide data-[state=active]:bg-white dark:data-[state=active]:bg-slate-800 shadow-sm transition-all text-slate-500 data-[state=active]:text-primary leading-none">
-                                            Security
-                                        </TabsTrigger>
-                                        <TabsTrigger value="nominee" className="py-3 px-0.5 rounded-lg font-bold text-[10px] sm:text-xs md:text-sm tracking-wide data-[state=active]:bg-white dark:data-[state=active]:bg-slate-800 shadow-sm transition-all text-slate-500 data-[state=active]:text-primary leading-none">
-                                            Nominee
-                                        </TabsTrigger>
-                                    </TabsList>
-                                </div>
+                                    ))}
+                                </TabsList>
 
-                                {/* Personal Data Tab */}
-                                <TabsContent value="personal-data" className="px-1.5 pb-8 sm:px-0 sm:pb-0">
-                                    <Form {...personalForm}>
-                                        <form onSubmit={personalForm.handleSubmit(onSubmitPersonal)} className="space-y-4 md:space-y-6">
-                                            <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-5">
-                                                <FormField
-                                                    control={personalForm.control}
-                                                    name="f_name"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="flex items-center gap-1.5 text-[11px] md:text-sm font-semibold truncate">
-                                                                <User className="w-3.5 h-3.5 text-primary shrink-0" />
-                                                                First Name
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="First" className="h-10 text-xs md:text-sm px-2.5" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage className="text-[10px]" />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={personalForm.control}
-                                                    name="l_name"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="flex items-center gap-1.5 text-[11px] md:text-sm font-semibold truncate">
-                                                                <User className="w-3.5 h-3.5 text-primary shrink-0" />
-                                                                Last Name
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="Last" className="h-10 text-xs md:text-sm px-2.5" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage className="text-[10px]" />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div>
+                                <div className="p-8">
+                                    <TabsContent value="personal" className="mt-0 space-y-8">
+                                        <Form {...personalForm}>
+                                            <form onSubmit={personalForm.handleSubmit(onSubmit)} className="space-y-8">
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                    {[
+                                                        { name: "f_name", label: "First Name", icon: User },
+                                                        { name: "l_name", label: "Last Name", icon: User },
+                                                        { name: "mob", label: "Mobile Node", icon: Phone },
+                                                        { name: "dob", label: "Date of Birth", icon: Calendar, type: "date" },
+                                                    ].map((f) => (
+                                                        <FormField
+                                                            key={f.name}
+                                                            control={personalForm.control}
+                                                            name={f.name}
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                                                                        <f.icon className="w-3 h-3 text-primary" /> {f.label}
+                                                                    </FormLabel>
+                                                                    <FormControl>
+                                                                        <Input type={f.type || "text"} className="h-12 bg-background/50 border-border text-xs font-bold rounded-xl" {...field} />
+                                                                    </FormControl>
+                                                                    <FormMessage className="text-[9px] font-bold" />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                    ))}
+                                                </div>
 
-                                            <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-5">
-                                                <FormField
-                                                    control={personalForm.control}
-                                                    name="mob"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="flex items-center gap-1.5 text-[11px] md:text-sm font-semibold truncate">
-                                                                <Phone className="w-3.5 h-3.5 text-primary shrink-0" />
-                                                                Mobile No
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="Mobile" className="h-10 text-xs md:text-sm px-2.5" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage className="text-[10px]" />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={personalForm.control}
-                                                    name="dob"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="flex items-center gap-1.5 text-[11px] md:text-sm font-semibold truncate">
-                                                                <Calendar className="w-3.5 h-3.5 text-primary shrink-0" />
-                                                                DOB
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input type="date" className="h-10 text-xs md:text-sm px-2" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage className="text-[10px]" />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div>
-
-                                            <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
                                                 <FormField
                                                     control={personalForm.control}
                                                     name="email"
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel className="flex items-center gap-2 text-xs md:text-sm font-semibold">
-                                                                <Mail className="w-4 h-4 text-primary" />
-                                                                Email Address
+                                                            <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                                                                <Mail className="w-3 h-3 text-primary" /> Primary Transmission Email
                                                             </FormLabel>
                                                             <FormControl>
-                                                                <Input type="email" placeholder="Enter email address" {...field} />
+                                                                <Input type="email" readOnly className="h-12 bg-muted/50 border-border text-xs font-bold rounded-xl opacity-70" {...field} />
                                                             </FormControl>
-                                                            <FormMessage />
                                                         </FormItem>
                                                     )}
                                                 />
-                                            </div>
 
-                                            <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-5">
-                                                <FormField
-                                                    control={personalForm.control}
-                                                    name="flat_no"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="flex items-center gap-1.5 text-[11px] md:text-sm font-semibold truncate">
-                                                                <Home className="w-3.5 h-3.5 text-primary shrink-0" />
-                                                                Flat/House No.
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="e.g. 101" className="h-10 text-xs md:text-sm px-2.5" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage className="text-[10px]" />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={personalForm.control}
-                                                    name="building_name"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="flex items-center gap-1.5 text-[11px] md:text-sm font-semibold truncate">
-                                                                <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
-                                                                Building
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="Street" className="h-10 text-xs md:text-sm px-2.5" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage className="text-[10px]" />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div>
+                                                <Separator className="opacity-50" />
 
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
-                                                <FormField
-                                                    control={personalForm.control}
-                                                    name="address1"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="flex items-center gap-2 text-xs md:text-sm font-semibold">
-                                                                <MapPin className="w-4 h-4 text-primary" />
-                                                                Address 1
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="Street address" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={personalForm.control}
-                                                    name="address2"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="flex items-center gap-2 text-xs md:text-sm font-semibold">
-                                                                <MapPin className="w-4 h-4 text-primary" />
-                                                                Address 2
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="Apartment, suite, etc." {...field} />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div>
-
-                                            <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-5">
-                                                <FormField
-                                                    control={personalForm.control}
-                                                    name="country"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="flex items-center gap-1.5 text-[11px] md:text-sm font-semibold truncate">
-                                                                <Globe className="w-3.5 h-3.5 text-primary shrink-0" />
-                                                                Country
-                                                            </FormLabel>
-                                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                                <FormControl>
-                                                                    <SelectTrigger className="w-full h-10 text-xs px-2">
-                                                                        <SelectValue placeholder="Country" />
-                                                                    </SelectTrigger>
-                                                                </FormControl>
-                                                                <SelectContent>
-                                                                    <SelectItem value="in">India</SelectItem>
-                                                                    <SelectItem value="us">United States</SelectItem>
-                                                                    <SelectItem value="uk">United Kingdom</SelectItem>
-                                                                    <SelectItem value="ca">Canada</SelectItem>
-                                                                </SelectContent>
-                                                            </Select>
-                                                            <FormMessage className="text-[10px]" />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={personalForm.control}
-                                                    name="state"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="flex items-center gap-1.5 text-[11px] md:text-sm font-semibold truncate">
-                                                                <Map className="w-3.5 h-3.5 text-primary shrink-0" />
-                                                                State
-                                                            </FormLabel>
-                                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                                <FormControl>
-                                                                    <SelectTrigger className="w-full h-10 text-xs px-2">
-                                                                        <SelectValue placeholder="State" />
-                                                                    </SelectTrigger>
-                                                                </FormControl>
-                                                                <SelectContent>
-                                                                    <SelectItem value="dl">Delhi</SelectItem>
-                                                                    <SelectItem value="mh">Maharashtra</SelectItem>
-                                                                </SelectContent>
-                                                            </Select>
-                                                            <FormMessage className="text-[10px]" />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div>
-
-                                            <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-5">
-                                                <FormField
-                                                    control={personalForm.control}
-                                                    name="city"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="flex items-center gap-1.5 text-[11px] md:text-sm font-semibold truncate">
-                                                                <Building className="w-3.5 h-3.5 text-primary shrink-0" />
-                                                                City
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="City" className="h-10 text-xs md:text-sm px-2.5" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage className="text-[10px]" />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={personalForm.control}
-                                                    name="zipcode"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="flex items-center gap-1.5 text-[11px] md:text-sm font-semibold truncate">
-                                                                <Hash className="w-3.5 h-3.5 text-primary shrink-0" />
-                                                                Zipcode
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="Zip" className="h-10 text-xs md:text-sm px-2.5" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage className="text-[10px]" />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div>
-
-                                            <div className="space-y-4">
-                                                <Label className="flex items-center gap-2 text-xs md:text-sm font-semibold px-1">
-                                                    <Upload className="w-4 h-4 text-primary" />
-                                                    Avatar
-                                                </Label>
-                                                <div className="flex items-center gap-4 px-1">
-                                                    <div className="relative">
-                                                        <Input type="file" id="avatar" className="hidden" />
-                                                        <Label htmlFor="avatar" className="flex items-center gap-2 px-4 py-2.5 border rounded-xl cursor-pointer hover:bg-accent text-sm font-medium transition-colors">
-                                                            <Upload className="w-4 h-4 text-primary" />
-                                                            Choose a file
-                                                        </Label>
-                                                    </div>
-                                                    <Avatar className="w-16 h-16 rounded-xl border-2 border-primary/20 p-1 shadow-sm">
-                                                        <AvatarImage src="https://clients.xpo.ru/public/assets/images/user.png" />
-                                                        <AvatarFallback>U</AvatarFallback>
-                                                    </Avatar>
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                    {[
+                                                        { name: "flat_no", label: "Node No.", icon: Home },
+                                                        { name: "building_name", label: "Street / Building", icon: MapPin },
+                                                        { name: "address1", label: "Address Line 1", icon: MapPin },
+                                                        { name: "address2", label: "Address Line 2", icon: MapPin },
+                                                        { name: "city", label: "City / District", icon: Building },
+                                                        { name: "zipcode", label: "Postal Index", icon: Hash },
+                                                    ].map((f) => (
+                                                        <FormField
+                                                            key={f.name}
+                                                            control={personalForm.control}
+                                                            name={f.name}
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                                                                        <f.icon className="w-3 h-3 text-primary" /> {f.label}
+                                                                    </FormLabel>
+                                                                    <FormControl>
+                                                                        <Input className="h-12 bg-background/50 border-border text-xs font-bold rounded-xl" {...field} />
+                                                                    </FormControl>
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                    ))}
                                                 </div>
-                                            </div>
 
-                                            <div className="flex justify-start pt-2 px-1">
-                                                <Button type="submit" className="w-full sm:w-auto h-12 px-10 font-bold text-sm tracking-wide rounded-xl">
-                                                    Update Profile
-                                                </Button>
-                                            </div>
-                                        </form>
-                                    </Form>
-                                </TabsContent>
+                                                <div className="flex justify-end pt-4">
+                                                    <Button className="h-14 px-12 rounded-2xl shadow-xl shadow-primary/20 font-black uppercase tracking-widest text-xs gap-3">
+                                                        Update Metadata <Zap className="w-4 h-4" />
+                                                    </Button>
+                                                </div>
+                                            </form>
+                                        </Form>
+                                    </TabsContent>
 
-                                {/* Financial Data Tab */}
-                                <TabsContent value="financial-data" className="px-4 pb-8 sm:px-0 sm:pb-0">
-                                    <div className="space-y-8">
-                                        {/* Bank Details */}
+                                    <TabsContent value="financial" className="mt-0">
                                         <Form {...financialForm}>
-                                            <form onSubmit={financialForm.handleSubmit(onSubmitFinancial)} className="space-y-5 md:space-y-6">
-                                                {/* <div className="flex items-center gap-2 mb-2">
-                                                    <Building2 className="w-5 h-5 text-primary" />
-                                                    <span className="text-lg font-bold text-primary">Bank Details</span>
-                                                </div> */}
-                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                                    <FormField
-                                                        control={financialForm.control}
-                                                        name="bank_name"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel className="flex items-center gap-2 text-xs md:text-sm font-semibold">
-                                                                    <Building2 className="w-4 h-4 text-primary" />
-                                                                    Bank Name
-                                                                </FormLabel>
-                                                                <FormControl>
-                                                                    <Input placeholder="Enter bank name" {...field} />
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={financialForm.control}
-                                                        name="bank_address"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel className="flex items-center gap-2 text-xs md:text-sm font-semibold">
-                                                                    <MapPin className="w-4 h-4 text-primary" />
-                                                                    Bank Address
-                                                                </FormLabel>
-                                                                <FormControl>
-                                                                    <Input placeholder="Enter bank location" {...field} />
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={financialForm.control}
-                                                        name="swift_code"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel className="flex items-center gap-2 text-xs md:text-sm font-semibold">
-                                                                    <LinkIcon className="w-4 h-4 text-primary" />
-                                                                    Swift Code
-                                                                </FormLabel>
-                                                                <FormControl>
-                                                                    <Input placeholder="Enter SWIFT/BIC code" {...field} />
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={financialForm.control}
-                                                        name="iban_no"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel className="flex items-center gap-2 text-xs md:text-sm font-semibold">
-                                                                    <CreditCard className="w-4 h-4 text-primary" />
-                                                                    IBAN No.
-                                                                </FormLabel>
-                                                                <FormControl>
-                                                                    <Input placeholder="Enter IBAN number" {...field} />
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={financialForm.control}
-                                                        name="account_name"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel className="flex items-center gap-2 text-xs md:text-sm font-semibold">
-                                                                    <User className="w-4 h-4 text-primary" />
-                                                                    Account Holder Name
-                                                                </FormLabel>
-                                                                <FormControl>
-                                                                    <Input placeholder="Enter holder's name" {...field} />
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={financialForm.control}
-                                                        name="micr_code"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel className="flex items-center gap-2 text-xs md:text-sm font-semibold">
-                                                                    <Hash className="w-4 h-4 text-primary" />
-                                                                    MICR Code
-                                                                </FormLabel>
-                                                                <FormControl>
-                                                                    <Input placeholder="Enter MICR code" {...field} />
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
+                                            <form onSubmit={financialForm.handleSubmit(onSubmit)} className="space-y-8">
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                    {[
+                                                        { name: "bank_name", label: "Bank Institution", icon: Building2 },
+                                                        { name: "account_name", label: "Holder Identity", icon: User },
+                                                        { name: "iban_no", label: "IBAN Identifier", icon: CreditCard },
+                                                        { name: "swift_code", label: "SWIFT/BIC Protocol", icon: Globe },
+                                                        { name: "micr_code", label: "MICR Signature", icon: Hash },
+                                                        { name: "bank_address", label: "Branch Physical Node", icon: MapPin },
+                                                    ].map((f) => (
+                                                        <FormField
+                                                            key={f.name}
+                                                            control={financialForm.control}
+                                                            name={f.name}
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                                                                        <f.icon className="w-3 h-3 text-primary" /> {f.label}
+                                                                    </FormLabel>
+                                                                    <FormControl>
+                                                                        <Input className="h-12 bg-background/50 border-border text-xs font-bold rounded-xl" {...field} />
+                                                                    </FormControl>
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                    ))}
                                                 </div>
-                                                <Button type="submit" className="w-full sm:w-auto h-11 px-8 font-bold text-sm tracking-wide rounded-xl">
-                                                    Update Bank Details
+
+                                                <Separator className="opacity-50" />
+
+                                                <FormField
+                                                    control={financialForm.control}
+                                                    name="usdt_address"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <div className="flex items-center justify-between mb-2">
+                                                                <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                                                                    <Wallet className="w-3 h-3 text-primary" /> USDT Liquidity Address (TRC20)
+                                                                </FormLabel>
+                                                                <Badge className="bg-amber-500/10 text-amber-600 border-none text-[8px] font-black px-2 h-5 rounded-md">OTP REQUIRED</Badge>
+                                                            </div>
+                                                            <FormControl>
+                                                                <Input className="h-12 bg-background/50 border-border text-xs font-bold rounded-xl font-mono text-primary" {...field} />
+                                                            </FormControl>
+                                                        </FormItem>
+                                                    )}
+                                                />
+
+                                                <div className="flex justify-end pt-4">
+                                                    <Button className="h-14 px-12 rounded-2xl shadow-xl shadow-primary/20 font-black uppercase tracking-widest text-xs gap-3">
+                                                        Synchronize Financials <Zap className="w-4 h-4" />
+                                                    </Button>
+                                                </div>
+                                            </form>
+                                        </Form>
+                                    </TabsContent>
+
+                                    <TabsContent value="security" className="mt-0">
+                                        <Form {...passwordForm}>
+                                            <form onSubmit={passwordForm.handleSubmit(onSubmit)} className="space-y-8 max-w-md mx-auto">
+                                                <div className="text-center space-y-2 mb-8">
+                                                    <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4 border border-primary/20">
+                                                        <Lock className="w-8 h-8 text-primary" />
+                                                    </div>
+                                                    <h3 className="font-black text-lg uppercase tracking-tight italic">Access Protocol Update</h3>
+                                                    <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">Update your biometric-replacement password string.</p>
+                                                </div>
+
+                                                <div className="space-y-6">
+                                                    {[
+                                                        { name: "current_password", label: "Existing Key", icon: Key },
+                                                        { name: "new_password", label: "New Encryption Key", icon: ShieldCheck },
+                                                        { name: "confirm_password", label: "Validate Key", icon: ShieldCheck },
+                                                    ].map((f) => (
+                                                        <FormField
+                                                            key={f.name}
+                                                            control={passwordForm.control}
+                                                            name={f.name}
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                                                                        <f.icon className="w-3 h-3 text-primary" /> {f.label}
+                                                                    </FormLabel>
+                                                                    <FormControl>
+                                                                        <Input type="password" placeholder="••••••••" className="h-12 bg-background/50 border-border text-xs font-bold rounded-xl" {...field} />
+                                                                    </FormControl>
+                                                                    <FormMessage className="text-[9px] font-bold" />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                    ))}
+                                                </div>
+
+                                                <Button className="w-full h-14 rounded-2xl shadow-xl shadow-primary/20 font-black uppercase tracking-widest text-xs gap-3 mt-8">
+                                                    Seal Access Protocol <ShieldCheck className="w-4 h-4" />
                                                 </Button>
                                             </form>
                                         </Form>
+                                    </TabsContent>
 
-                                        {/* USDT Address */}
-                                        <div className="space-y-6 border-t border-slate-200 dark:border-slate-800 pt-8">
-                                            <div className="flex items-center gap-2 mb-2">
-                                                <Wallet className="w-5 h-5 text-primary" />
-                                                <span className="text-lg font-bold text-primary">USDT Address</span>
-                                            </div>
-                                            <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800 text-sm text-muted-foreground">
-                                                If you wish to change your USDT address, please generate OTP via
-                                                <div className="flex gap-2 mt-4">
-                                                    <Button size="sm" variant="outline" className="text-emerald-600 border-emerald-200 bg-emerald-50 hover:bg-emerald-100 rounded-lg px-4 font-bold">
-                                                        Whatsapp
-                                                    </Button>
-                                                    <span className="self-center font-medium opacity-50">or</span>
-                                                    <Button size="sm" variant="outline" className="rounded-lg px-4 font-bold">
-                                                        Message
+                                    <TabsContent value="nominee" className="mt-0">
+                                        <Form {...nomineeForm}>
+                                            <form onSubmit={nomineeForm.handleSubmit(onSubmit)} className="space-y-8">
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                    {[
+                                                        { name: "nominee_name", label: "Nominee Full Identity", icon: UserPlus },
+                                                        { name: "nominee_dob", label: "Nominee Birthdate", icon: Calendar, type: "date" },
+                                                        { name: "nominee_email", label: "Nominee Transmission Email", icon: Mail },
+                                                        { name: "nominee_relation", label: "Relational Affinity", icon: Heart },
+                                                    ].map((f) => (
+                                                        <FormField
+                                                            key={f.name}
+                                                            control={nomineeForm.control}
+                                                            name={f.name}
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                                                                        <f.icon className="w-3 h-3 text-primary" /> {f.label}
+                                                                    </FormLabel>
+                                                                    <FormControl>
+                                                                        <Input type={f.type || "text"} className="h-12 bg-background/50 border-border text-xs font-bold rounded-xl" {...field} />
+                                                                    </FormControl>
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                    ))}
+                                                </div>
+
+                                                <div className="flex justify-end pt-4">
+                                                    <Button className="h-14 px-12 rounded-2xl shadow-xl shadow-primary/20 font-black uppercase tracking-widest text-xs gap-3">
+                                                        Register Nominee <Zap className="w-4 h-4" />
                                                     </Button>
                                                 </div>
-                                            </div>
-                                            <Form {...financialForm}>
-                                                <form onSubmit={financialForm.handleSubmit(onSubmitFinancial)} className="space-y-4">
-                                                    <FormField
-                                                        control={financialForm.control}
-                                                        name="usdt_address"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel className="flex items-center gap-2 text-xs md:text-sm font-semibold">
-                                                                    <Wallet className="w-4 h-4 text-primary" />
-                                                                    USDT Address (TRC20 only)
-                                                                </FormLabel>
-                                                                <FormControl>
-                                                                    <Input placeholder="Enter TRC20 address" {...field} />
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <Button type="submit" className="w-full sm:w-auto h-11 px-8 font-bold text-sm tracking-wide rounded-xl">
-                                                        Update USDT Address
-                                                    </Button>
-                                                </form>
-                                            </Form>
-                                        </div>
-                                    </div>
-                                </TabsContent>
-
-                                {/* Password Tab */}
-                                <TabsContent value="password" className="px-4 pb-8 sm:px-0 sm:pb-0">
-                                    <Form {...passwordForm}>
-                                        <form onSubmit={passwordForm.handleSubmit(onSubmitPassword)} className="space-y-5 md:space-y-6">
-                                            <div className="md:w-1/2">
-                                                <FormField
-                                                    control={passwordForm.control}
-                                                    name="current_password"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="flex items-center gap-2 text-xs md:text-sm font-semibold">
-                                                                <Lock className="w-4 h-4 text-primary" />
-                                                                Old Password
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input type="password" placeholder="Enter current password" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div>
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                                <FormField
-                                                    control={passwordForm.control}
-                                                    name="new_password"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="flex items-center gap-2 text-xs md:text-sm font-semibold">
-                                                                <Key className="w-4 h-4 text-primary" />
-                                                                New Password
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input type="password" placeholder="Min 8 characters" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={passwordForm.control}
-                                                    name="confirm_password"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="flex items-center gap-2 text-xs md:text-sm font-semibold">
-                                                                <ShieldCheck className="w-4 h-4 text-primary" />
-                                                                Confirm New Password
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input type="password" placeholder="Repeat new password" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div>
-                                            <Button type="submit" className="w-full sm:w-auto h-11 px-10 font-bold text-sm tracking-wide rounded-xl">
-                                                Update Security
-                                            </Button>
-                                        </form>
-                                    </Form>
-                                </TabsContent>
-
-                                {/* Nominee Tab */}
-                                <TabsContent value="nominee" className="px-4 pb-8 sm:px-0 sm:pb-0">
-                                    <Form {...nomineeForm}>
-                                        <form onSubmit={nomineeForm.handleSubmit(onSubmitNominee)} className="space-y-5 md:space-y-6">
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                                <FormField
-                                                    control={nomineeForm.control}
-                                                    name="nominee_name"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="flex items-center gap-2 text-xs md:text-sm font-semibold">
-                                                                <UserPlus className="w-4 h-4 text-primary" />
-                                                                Nominee Name
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="Enter nominee fullname" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={nomineeForm.control}
-                                                    name="nominee_dob"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="flex items-center gap-2 text-xs md:text-sm font-semibold">
-                                                                <Calendar className="w-4 h-4 text-primary" />
-                                                                Nominee DOB
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input type="date" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={nomineeForm.control}
-                                                    name="nominee_email"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="flex items-center gap-2 text-xs md:text-sm font-semibold">
-                                                                <Mail className="w-4 h-4 text-primary" />
-                                                                Nominee Email
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input type="email" placeholder="Enter nominee email" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={nomineeForm.control}
-                                                    name="nominee_relation"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="flex items-center gap-2 text-xs md:text-sm font-semibold">
-                                                                <Heart className="w-4 h-4 text-primary" />
-                                                                Nominee Relation
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="e.g. Spouse, Child" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div>
-                                            <Button type="submit" className="w-full sm:w-auto h-11 px-10 font-bold text-sm tracking-wide rounded-xl">
-                                                Update Nominee
-                                            </Button>
-                                        </form>
-                                    </Form>
-                                </TabsContent>
+                                            </form>
+                                        </Form>
+                                    </TabsContent>
+                                </div>
                             </Tabs>
-                        </CardContent>
+                        </CardHeader>
                     </Card>
                 </div>
 
-                {/* Sidebar - Right Column */}
-                <div className="lg:col-span-4 space-y-6">
-                    {/* Account Status Card */}
-                    <Card>
-                        <CardContent className="p-4 md:p-6 space-y-6">
-                            <div>
-                                <h3 className="text-sm font-medium text-primary uppercase tracking-wider mb-3">Your Account Status</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    <span className="px-2 py-1 text-xs font-semibold text-white bg-red-500 rounded">Email Unverified</span>
-                                    <span className="px-2 py-1 text-xs font-semibold text-white bg-red-500 rounded">KYC Pending</span>
+                {/* Sidebar */}
+                <div className="xl:col-span-4 space-y-8">
+                    {/* Visual Profile */}
+                    <Card className="border-border shadow-none bg-slate-950 text-white overflow-hidden relative group">
+                        <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform duration-1000">
+                            <User className="w-32 h-32 text-primary" />
+                        </div>
+                        <CardContent className="p-8 flex flex-col items-center text-center relative z-10">
+                            <div className="relative mb-6 group/avatar">
+                                <Avatar className="h-32 w-32 border-4 border-slate-900 shadow-2xl transition-transform duration-500 hover:scale-105">
+                                    <AvatarImage src="https://clients.xpo.ru/public/assets/images/user.png" />
+                                    <AvatarFallback className="bg-primary text-primary-foreground font-black text-3xl">PS</AvatarFallback>
+                                </Avatar>
+                                <Label htmlFor="avatar-upload" className="absolute bottom-1 right-1 w-10 h-10 bg-primary rounded-xl border-4 border-slate-950 flex items-center justify-center cursor-pointer hover:bg-primary/90 shadow-xl transition-all">
+                                    <Upload className="w-4 h-4 text-white" />
+                                    <Input id="avatar-upload" type="file" className="hidden" />
+                                </Label>
+                            </div>
+                            <h3 className="text-xl font-black uppercase italic tracking-tighter">prince sharma</h3>
+                            <p className="text-[10px] font-black text-primary/80 uppercase tracking-[0.2em] mb-6">Master Node Active</p>
+
+                            <div className="grid grid-cols-2 gap-3 w-full">
+                                <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-center">
+                                    <p className="text-[9px] font-black uppercase text-slate-500 mb-1">Affiliation</p>
+                                    <p className="text-xs font-black tracking-tighter uppercase italic text-emerald-400">Standard</p>
+                                </div>
+                                <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-center">
+                                    <p className="text-[9px] font-black uppercase text-slate-500 mb-1">Loyalty</p>
+                                    <p className="text-xs font-black tracking-tighter uppercase italic text-primary">Prestige</p>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Status Console */}
+                    <Card className="border-border shadow-none bg-card/50">
+                        <CardHeader className="p-6 border-b bg-muted/20">
+                            <CardTitle className="text-xs font-black uppercase tracking-widest flex items-center gap-2 italic">
+                                <ShieldAlert className="w-4 h-4 text-primary" /> Integrity Status
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-6 space-y-6">
+                            {[
+                                { label: "Identity Core (KYC)", status: "Unverified", alert: true },
+                                { label: "Primary Transmission", status: "Verified", alert: false },
+                                { label: "Financial Nodes", status: "Pending", alert: true },
+                            ].map((s, i) => (
+                                <div key={i} className="flex items-center justify-between">
+                                    <span className="text-[10px] font-black uppercase tracking-tight text-muted-foreground">{s.label}</span>
+                                    <Badge
+                                        variant="outline"
+                                        className={cn(
+                                            "font-black text-[9px] px-2 h-5 rounded-md uppercase tracking-widest border-none",
+                                            s.alert ? "bg-rose-500/10 text-rose-600" : "bg-emerald-500/10 text-emerald-600"
+                                        )}
+                                    >
+                                        {s.status}
+                                    </Badge>
+                                </div>
+                            ))}
+
+                            <Separator className="bg-border" />
+
+                            <div className="space-y-4">
+                                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest italic mb-2">Network Metadata</p>
+                                <div className="space-y-3">
+                                    <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-tight">
+                                        <span className="opacity-50">Node Uptime</span>
+                                        <span className="text-foreground">99.9%</span>
+                                    </div>
+                                    <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-tight">
+                                        <span className="opacity-50">Last Login</span>
+                                        <span className="text-foreground">03 FEB 2026</span>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div>
-                                <h3 className="text-sm font-medium text-primary uppercase tracking-wider mb-4">Bank Account Details</h3>
-                                <div className="space-y-3 text-sm">
-                                    <div className="grid grid-cols-5 gap-2">
-                                        <span className="col-span-2 font-semibold">Bank Name:</span>
-                                        <span className="col-span-3 text-muted-foreground">N/A</span>
-                                    </div>
-                                    <div className="grid grid-cols-5 gap-2">
-                                        <span className="col-span-2 font-semibold">Holder Name:</span>
-                                        <span className="col-span-3 text-muted-foreground">N/A</span>
-                                    </div>
-                                    <div className="grid grid-cols-5 gap-2">
-                                        <span className="col-span-2 font-semibold">Account No.:</span>
-                                        <span className="col-span-3 text-muted-foreground">N/A</span>
-                                    </div>
-                                    <div className="grid grid-cols-5 gap-2">
-                                        <span className="col-span-2 font-semibold">Address:</span>
-                                        <span className="col-span-3 text-muted-foreground">N/A</span>
-                                    </div>
-                                    <div className="grid grid-cols-5 gap-2">
-                                        <span className="col-span-2 font-semibold">Swift Code:</span>
-                                        <span className="col-span-3 text-muted-foreground">N/A</span>
-                                    </div>
-                                    <div className="grid grid-cols-5 gap-2">
-                                        <span className="col-span-2 font-semibold">IBAN No.:</span>
-                                        <span className="col-span-3 text-muted-foreground">N/A</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <h3 className="text-sm font-medium text-primary uppercase tracking-wider mb-2">USDT Address</h3>
-                                <p className="text-muted-foreground">N/A</p>
-                            </div>
-                        </CardContent>
-                    </Card >
-
-                    {/* Earn Rewards Card */}
-                    < Card >
-                        <CardContent className="p-4 md:p-6">
-                            <h3 className="text-sm font-medium text-primary uppercase tracking-wider mb-2">Earn with Referral</h3>
-                            <p className="text-sm text-muted-foreground">Earn something extra each month for every friend you bring to platform</p>
-                        </CardContent>
-                    </Card >
-
-                    {/* KYC Card */}
-                    < Card className="bg-primary text-primary-foreground" >
-                        <CardContent className="p-4 md:p-6 space-y-4">
-                            <h3 className="font-semibold">Identity Verification - KYC</h3>
-                            <p className="text-xs opacity-90">To comply with regulation, participant will have to go through indentity verification.</p>
-                            <p className="text-sm font-medium">You have not submitted your KYC application to verify your indentity.</p>
-
-                            <Button variant="secondary" className="w-full text-primary bg-white hover:bg-gray-100">
-                                Click to Proceed
+                            <Button onClick={() => window.location.href = "/dashboard/kyc"} className="w-full h-12 rounded-xl border-dashed border-2 border-primary/20 bg-primary/5 hover:bg-primary/10 text-primary font-black text-[10px] uppercase tracking-[0.2em] gap-2 transition-all group">
+                                Standardize Identity <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                             </Button>
-
-                            <div className="flex items-start gap-2 text-xs text-red-200 mt-2">
-                                <span>*</span>
-                                <span>KYC verification required for purchase token</span>
-                            </div>
                         </CardContent>
                     </Card>
                 </div>
